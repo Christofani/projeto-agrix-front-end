@@ -2,7 +2,7 @@ import { useState } from 'react';
 import Header from "../../components/Header";
 import CreateCrop from "./CreateCrop";
 import CropList from "./CropList";
-import imagem from "../../images/plantinha.png"
+import imagem from "../../images/do.webp"
 
 function Crops() {
   const [activePage, setActivePage] = useState<'create' | 'list' | 'none'>('none');
@@ -45,7 +45,7 @@ function Crops() {
           <img
             src={imagem}
             alt="Imagem ilustrativa"
-            className="w-64 h-auto rounded-lg"
+            className="w-full max-w-xs sm:max-w-sm h-auto rounded-lg"
           />
         </div>
       )}

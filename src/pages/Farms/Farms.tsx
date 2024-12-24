@@ -45,9 +45,14 @@ function Farms() {
           <img
             src={imagem} // Substitua pelo caminho correto da sua imagem
             alt="Imagem ilustrativa"
-            className="w-64 h-auto rounded-lg"
+            className="w-full max-w-xs sm:max-w-sm h-auto rounded-lg"
           />
         </div>
+
+
+
+
+
       )}
 
       {/* Formulário de criação de fazenda */}
