@@ -74,8 +74,10 @@ const CreateCrop: React.FC<{ onCancel: () => void }> = ({ onCancel }) => {
   };
 
   return (
-    <div className="max-w-md mx-auto mt-10 p-6 bg-white rounded-lg shadow-md">
-      <h1 className="text-2xl font-bold mb-6 text-center">Criar Nova Plantação</h1>
+    <div className="max-w-md mx-auto my-8 p-4 bg-white rounded-md shadow-md font-quicksand">
+      <h1 className="text-2xl font-bold mb-6 text-center">
+        Criar Nova Plantação
+      </h1>
 
       {/* Mensagem de erro ou sucesso */}
       {message && <p className="mb-4 text-center">{message}</p>}
@@ -120,7 +122,10 @@ const CreateCrop: React.FC<{ onCancel: () => void }> = ({ onCancel }) => {
 
         {/* Área plantada */}
         <div className="mb-4">
-          <label htmlFor="plantedArea" className="block text-gray-700 font-medium">
+          <label
+            htmlFor="plantedArea"
+            className="block text-gray-700 font-medium"
+          >
             Área Plantada (hectares):
           </label>
           <input
@@ -136,7 +141,10 @@ const CreateCrop: React.FC<{ onCancel: () => void }> = ({ onCancel }) => {
 
         {/* Data de plantio */}
         <div className="mb-4">
-          <label htmlFor="plantedDate" className="block text-gray-700 font-medium">
+          <label
+            htmlFor="plantedDate"
+            className="block text-gray-700 font-medium"
+          >
             Data de Plantio:
           </label>
           <input
@@ -152,7 +160,10 @@ const CreateCrop: React.FC<{ onCancel: () => void }> = ({ onCancel }) => {
 
         {/* Data de colheita */}
         <div className="mb-4">
-          <label htmlFor="harvestDate" className="block text-gray-700 font-medium">
+          <label
+            htmlFor="harvestDate"
+            className="block text-gray-700 font-medium"
+          >
             Data de Colheita:
           </label>
           <input
@@ -171,13 +182,13 @@ const CreateCrop: React.FC<{ onCancel: () => void }> = ({ onCancel }) => {
           <button
             type="button"
             onClick={onCancel} // Chama a função onCancel ao clicar em "Cancelar"
-            className="bg-gray-400 text-white py-2 px-4 rounded-md hover:bg-gray-500"
+            className="bg-gray-400 text-white py-2 px-4 rounded-md hover:bg-red-500"
           >
             Cancelar
           </button>
           <button
             type="submit"
-            className="bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600"
+            className="bg-gray-500 text-white py-2 px-4 rounded-md hover:bg-green-600"
           >
             Criar Plantação
           </button>

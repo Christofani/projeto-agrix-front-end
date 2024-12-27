@@ -1,9 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { Farm } from '../../types/FarmType';
-
-import api from '../../api'; // Configuração do Axios
-
+import { Farm } from "../../types/FarmType";
+import api from "../../api"; // Configuração do Axios
 
 const FarmDetails: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -18,8 +16,8 @@ const FarmDetails: React.FC = () => {
         const response = await api.get(`/farms/${id}`);
         setFarm(response.data);
       } catch (err) {
-        console.error('Erro ao buscar a fazenda:', err);
-        setError('Erro ao carregar a fazenda.');
+        console.error("Erro ao buscar a fazenda:", err);
+        setError("Erro ao carregar a fazenda.");
       } finally {
         setLoading(false);
       }
@@ -31,11 +29,11 @@ const FarmDetails: React.FC = () => {
   const handleDelete = async () => {
     try {
       await api.delete(`/farms/${id}`);
-      alert('Fazenda excluída com sucesso.');
-      navigate('/farms'); // Volta para a lista de fazendas
+      alert("Fazenda excluída com sucesso.");
+      navigate("/farms"); // Volta para a lista de fazendas
     } catch (err) {
-      console.error('Erro ao excluir a fazenda:', err);
-      alert('Erro ao excluir a fazenda.');
+      console.error("Erro ao excluir a fazenda:", err);
+      alert("Erro ao excluir a fazenda.");
     }
   };
 
@@ -43,10 +41,10 @@ const FarmDetails: React.FC = () => {
     e.preventDefault();
     try {
       await api.put(`/farms/${id}`, farm);
-      alert('Fazenda atualizada com sucesso.');
+      alert("Fazenda atualizada com sucesso.");
     } catch (err) {
-      console.error('Erro ao editar a fazenda:', err);
-      alert('Erro ao editar a fazenda.');
+      console.error("Erro ao editar a fazenda:", err);
+      alert("Erro ao editar a fazenda.");
     }
   };
 
@@ -63,14 +61,16 @@ const FarmDetails: React.FC = () => {
   }
 
   return (
-    <div className="max-w-md mx-auto mt-10 p-6 bg-white rounded-lg shadow-md">
+    <div className="max-w-md mx-auto mt-10 p-6 bg-white rounded-lg shadow-md font-quicksand">
       <button
-        onClick={() => navigate('/farms')}
+        onClick={() => navigate("/farms")}
         className="text-blue-500 hover:text-blue-700 flex items-center mb-6"
       >
         <span className="mr-2">&larr;</span> Voltar para fazendas
       </button>
-      <h1 className="text-2xl font-bold mb-6 text-center">Detalhes da Fazenda</h1>
+      <h1 className="text-2xl font-bold mb-6 text-center">
+        Detalhes da Fazenda
+      </h1>
       <form onSubmit={handleEdit}>
         <div className="mb-4">
           <label htmlFor="name" className="block text-gray-700 font-medium">

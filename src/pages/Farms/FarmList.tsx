@@ -35,7 +35,7 @@ const FarmList: React.FC = () => {
   }
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 p-6">
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 p-4 md:p-8 my-10">
       {farms.length > 0 ? (
         farms.map((farm) => (
           <div
@@ -48,7 +48,9 @@ const FarmList: React.FC = () => {
           </div>
         ))
       ) : (
-        <p className="text-gray-600 text-center">Nenhuma fazenda cadastrada.</p>
+        <p className="flex items-center justify-center text-gray-600 text-center">
+          Nenhuma fazenda cadastrada.
+        </p>
       )}
     </div>
   );

@@ -5,6 +5,7 @@ const api = axios.create({
 });
 
 // Adiciona um interceptor para incluir o token no cabeçalho
+// Resolver problema de token 
 api.interceptors.request.use(
   (config) => {
     const token = localStorage.getItem("token"); // Obtém o token do localStorage ou outro método de armazenamento
