@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import api from '../../api'; // Configuração do Axios
-import { Crop } from "../../types/CropType";
+import { Crop, CropListProps } from "../../types/CropType";
 
-const CropList: React.FC = () => {
+const CropList: React.FC<CropListProps> = ({ onNavigate }) => {
   const [crops, setCrops] = useState<Crop[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
@@ -39,7 +39,8 @@ const CropList: React.FC = () => {
         crops.map((crop) => (
           <div
             key={crop.id}
-            className="p-4 bg-white rounded-lg shadow-md border border-gray-200 hover:shadow-lg transition-shadow"
+            className="p-4 bg-gray-100 rounded-lg shadow-md cursor-pointer hover:bg-gray-200"
+            onClick={() => onNavigate(crop.id)}
           >
             <h3 className="text-xl font-bold text-gray-700">{crop.name}</h3>
             <p className="text-gray-600">

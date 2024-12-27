@@ -1,15 +1,7 @@
 import React, { useState } from 'react';
 import api from '../../api'; // Configuração do Axios
+import { Farm, CreateFarmProps } from "../../types/FarmType";
 
-interface Farm {
-  id: number;
-  name: string;
-  size: number;
-}
-
-interface CreateFarmProps {
-  onCancel?: () => void; // Função para cancelar
-}
 
 const CreateFarm: React.FC<CreateFarmProps> = ({ onCancel }) => {
   const [formData, setFormData] = useState({

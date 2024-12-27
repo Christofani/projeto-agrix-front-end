@@ -2,20 +2,31 @@ import { useState } from 'react';
 import Header from "../../components/Header";
 import CreateFarm from "./CreateFarm";
 import FarmList from "./FarmList";
+import FarmDetails from "./FarmDetails";
 import imagem from "../../images/370a0abe-4df3-4e0c-a9fc-354d1d1cd50d.webp"; // Substitua pelo caminho correto da sua imagem
 
 function Farms() {
-  const [activePage, setActivePage] = useState<'create' | 'list' | 'none'>('none');
+  const [activePage, setActivePage] = useState<
+    "create" | "list" | "details" | "none"
+  >("none");
+  const [selectedFarmId, setSelectedFarmId] = useState<number | null>(null);
   const [showImage, setShowImage] = useState(true);
 
-  const handlePageChange = (page: 'create' | 'list') => {
+  const handlePageChange = (
+    page: "create" | "list" | "details",
+    farmId?: number
+  ) => {
     setActivePage(page);
-    setShowImage(false); // Esconde a imagem ao mudar para o formulário ou lista
+    setShowImage(false); // Esconde a imagem ao mudar de página
+    if (farmId) {
+      setSelectedFarmId(farmId); // Define o ID da fazenda selecionada, se fornecido
+    }
   };
 
   const handleCancel = () => {
-    setActivePage('none');
+    setActivePage("none");
     setShowImage(true); // Volta a mostrar os botões e a imagem
+    setSelectedFarmId(null); // Reseta o ID da fazenda
   };
 
   return (
@@ -27,13 +38,13 @@ function Farms() {
         <div className="flex justify-center mt-4 p-4">
           <div className="space-x-4">
             <button
-              onClick={() => handlePageChange("create")} // Ao clicar, exibe o formulário
+              onClick={() => handlePageChange("create")}
               className="bg-gray-500 text-white py-2 px-4 rounded-md hover:bg-gray-600"
             >
               Criar nova Fazenda
             </button>
             <button
-              onClick={() => handlePageChange("list")} // Para listar as fazendas
+              onClick={() => handlePageChange("list")}
               className="bg-teal-700 text-white py-2 px-4 rounded-md hover:bg-teal-900"
             >
               Listar Fazendas
@@ -58,7 +69,7 @@ function Farms() {
         <div className="p-4 md:p-8">
           <button
             onClick={handleCancel}
-            className="text-blue-500 hover:text-blue-700 flex items-center mb-6"
+            className="text-teal-700 hover:text-teal-900 flex items-center mb-6"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -84,7 +95,7 @@ function Farms() {
         <div className="p-4 md:p-8">
           <button
             onClick={handleCancel}
-            className="text-blue-500 hover:text-blue-700 flex items-center mb-6"
+            className="text-teal-700 hover:text-teal-900 flex items-center mb-6"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -101,7 +112,19 @@ function Farms() {
               />
             </svg>
           </button>
-          <FarmList />
+          <FarmList
+            onNavigate={(farmId) => handlePageChange("details", farmId)}
+          />
+        </div>
+      )}
+
+      {/* Detalhes da fazenda */}
+      {activePage === "details" && selectedFarmId && (
+        <div className="p-4 md:p-8">
+          <FarmDetails
+            farmId={selectedFarmId}
+            onBack={() => handlePageChange("list")}
+          />
         </div>
       )}
     </div>

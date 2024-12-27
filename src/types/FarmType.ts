@@ -4,7 +4,20 @@ export interface Farm {
   size: number;
 }
 
-export interface CreaterFarm {
+export interface CreateFarm {
   name: string;
   size: number;
+}
+
+export interface FarmDetailsProps {
+  farmId: number;
+  onBack: () => void;
+}
+
+export interface CreateFarmProps {
+  onCancel?: () => void; // Função para cancelar
+}
+
+export interface FarmListProps {
+  onNavigate: (farmId: number) => void;
 }

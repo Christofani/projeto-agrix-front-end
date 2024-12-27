@@ -3,21 +3,31 @@ import Header from "../../components/Header";
 import CreateCrop from "./CreateCrop";
 import CropList from "./CropList";
 import imagem from "../../images/imagemCrop2.webp";
+import CropDetails from "./CropDetails";
 
 function Crops() {
-  const [activePage, setActivePage] = useState<"create" | "list" | "none">(
-    "none"
-  );
+  const [activePage, setActivePage] = useState<
+    "create" | "list" | "none" | "details"
+  >("none");
+
+  const [selectedCropId, setSelectedCropId] = useState<number | null>(null);
   const [showImage, setShowImage] = useState(true);
 
-  const handlePageChange = (page: "create" | "list") => {
+  const handlePageChange = (
+    page: "create" | "list" | "details",
+    cropId?: number
+  ) => {
     setActivePage(page);
-    setShowImage(false); // Esconde a imagem ao mudar para o formulário ou lista
+    setShowImage(false);
+    if (cropId) {
+      setSelectedCropId(cropId);
+    }
   };
 
   const handleCancel = () => {
     setActivePage("none");
-    setShowImage(true); // Volta a mostrar os botões e a imagem
+    setShowImage(true);
+    setSelectedCropId(null);
   };
 
   return (
@@ -50,8 +60,62 @@ function Crops() {
           />
         </div>
       )}
-      {activePage === "create" && <CreateCrop onCancel={handleCancel} />}
-      {activePage === "list" && <CropList />}
+      {activePage === "create" && (
+        <div className="p-4 md:p-8">
+          <button
+            onClick={handleCancel}
+            className="text-teal-700 hover:text-teal-900 flex items-center mb-6"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              strokeWidth={1.5}
+              stroke="currentColor"
+              className="size-8 transition-transform transform hover:scale-125"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18"
+              />
+            </svg>
+          </button>
+          <CreateCrop onCancel={handleCancel} />
+        </div>
+      )}
+      {activePage === "list" && (
+        <div className="p-4 md:p-8">
+          <button
+            onClick={handleCancel}
+            className="text-teal-700 hover:text-teal-900 flex items-center mb-6"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              strokeWidth={1.5}
+              stroke="currentColor"
+              className="size-8 transition-transform transform hover:scale-125"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18"
+              />
+            </svg>
+          </button>
+          <CropList
+            onNavigate={(cropId) => handlePageChange("details", cropId)}
+          />
+        </div>
+      )}
+
+      {activePage === "details" && selectedCropId && (
+        <div className="p-4 md:p-8">
+          <CropDetails cropId={selectedCropId} onBack={handleCancel} />
+        </div>
+      )}
     </div>
   );
 }
