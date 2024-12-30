@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import api from "../../api"; // Configuração do Axios
 
@@ -7,7 +7,7 @@ const Login: React.FC = () => {
     username: "",
     password: "",
   });
-  const [message, setMessage] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState(false); // Estado de loading
   const [showPassword, setShowPassword] = useState(false);
   const [rememberMe, setRememberMe] = useState(false);
   const navigate = useNavigate();
@@ -31,13 +31,15 @@ const Login: React.FC = () => {
   // Realiza a requisição de login
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setIsLoading(true); // Inicia o carregamento
     try {
       const response = await api.post("/auth/login", credentials);
-      const { token } = response.data; // Assumindo que a resposta tem apenas o token
+      const { token } = response.data;
 
       // Armazena o token e o nome de usuário no localStorage
       localStorage.setItem("token", token);
-      localStorage.setItem("username", credentials.username); // Salva o nome de usuário que foi digitado
+      localStorage.setItem("username", credentials.username);
+      localStorage.setItem("password", credentials.password);
 
       if (rememberMe) {
         localStorage.setItem("rememberMe", "true"); // Salva a opção "remember me"
@@ -49,13 +51,23 @@ const Login: React.FC = () => {
       navigate("/home"); // Substitua com a rota desejada
     } catch (error) {
       console.error("Erro ao fazer login:", error);
-      setMessage("Credenciais inválidas. Tente novamente.");
+      alert("Credenciais inválidas. Tente novamente."); // Exibe um alert em vez de uma mensagem
+    } finally {
+      setIsLoading(false); // Finaliza o carregamento
     }
   };
 
   return (
-    <div className="bg-teal-100 min-h-screen flex items-center justify-center font-quicksand">
-      {message && <p className="mb-4 text-center text-red-500">{message}</p>}
+    <div className="bg-teal-100 min-h-screen flex items-center justify-center font-quicksand relative">
+      {isLoading && (
+        <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center">
+          <div className="text-white text-lg flex flex-col items-center">
+            <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-teal-400 border-solid mb-4"></div>
+            <p>Carregando...</p>
+          </div>
+        </div>
+      )}
+
       <form
         onSubmit={handleSubmit}
         className="bg-white px-14 py-10 rounded-xl shadow-lg text-center w-96"
@@ -108,11 +120,11 @@ const Login: React.FC = () => {
                 xmlns="http://www.w3.org/2000/svg"
                 viewBox="0 0 24 24"
                 fill="currentColor"
-                className="size-5  text-teal-400"
+                className="size-5 text-teal-400"
               >
                 <path d="M3.53 2.47a.75.75 0 0 0-1.06 1.06l18 18a.75.75 0 1 0 1.06-1.06l-18-18ZM22.676 12.553a11.249 11.249 0 0 1-2.631 4.31l-3.099-3.099a5.25 5.25 0 0 0-6.71-6.71L7.759 4.577a11.217 11.217 0 0 1 4.242-.827c4.97 0 9.185 3.223 10.675 7.69.12.362.12.752 0 1.113Z" />
                 <path d="M15.75 12c0 .18-.013.357-.037.53l-4.244-4.243A3.75 3.75 0 0 1 15.75 12ZM12.53 15.713l-4.243-4.244a3.75 3.75 0 0 0 4.244 4.243Z" />
-                <path d="M6.75 12c0-.619.107-1.213.304-1.764l-3.1-3.1a11.25 11.25 0 0 0-2.63 4.31c-.12.362-.12.752 0 1.114 1.489 4.467 5.704 7.69 10.675 7.69 1.5 0 2.933-.294 4.242-.827l-2.477-2.477A5.25 5.25 0 0 1 6.75 12Z" />
+                <path d="M6.75 12c0-.619.107-1.213.304-1.764l-3.1-3.1a11.25 11.25 0 0 0-2.63 4.31c-.12.362-.12.752 0 1.114 1.489 4.467 5.704 7.69 10.675 7.69 1.5 0 2.933-.294 4.242-.827l-2.477-2.477A5.25 5.25 00 1 6.75 12Z" />
               </svg>
             )}
           </button>
