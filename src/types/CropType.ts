@@ -1,17 +1,21 @@
+import { Fertilizer } from "./FertilizerType";
+
 export interface Crop {
   id: number;
   name: string;
   plantedArea: number;
   plantedDate: string;
   harvestDate: string;
-  farmId: number; // ID da fazenda associada à plantação
+  farmId: number; //
+  fertilizers: Fertilizer[];
 }
 
-export interface CreateCrop {
+export interface CreateCropType {
   name: string;
   plantedArea: number;
   plantedDate: string;
-  harvestDate: string; // ID da fazenda associada à plantação
+  harvestDate: string;
+  farmId: number // ID da fazenda associada à plantação
 }
 
 export interface CropDetailsProps {

@@ -1,37 +1,27 @@
 import React, { useState, useEffect } from 'react';
 import api from '../../api'; // Importa a configuração do Axios
-
-interface Farm {
-  id: number;
-  name: string;
-}
-
-interface Crop {
-  name: string;
-  plantedArea: number;
-  plantedDate: string;
-  harvestDate: string;
-}
+import { CreateCropType } from "../../types/CropType";
+import { Farm } from "../../types/FarmType";
 
 const CreateCrop: React.FC<{ onCancel: () => void }> = ({ onCancel }) => {
   const [farms, setFarms] = useState<Farm[]>([]);
-  const [formData, setFormData] = useState<Crop>({
-    name: '',
+  const [formData, setFormData] = useState<CreateCropType>({
+    name: "",
     plantedArea: 0,
-    plantedDate: '',
-    harvestDate: '',
+    plantedDate: "",
+    harvestDate: "",
+    farmId: 0, // Certifique-se de que o farmId seja inicializado
   });
-  const [selectedFarmId, setSelectedFarmId] = useState<number | null>(null); // Farm selecionada
   const [message, setMessage] = useState<string | null>(null);
 
   // Carrega as fazendas disponíveis para o select
   useEffect(() => {
     const fetchFarms = async () => {
       try {
-        const response = await api.get<Farm[]>('/farms'); // Endpoint que retorna as fazendas
+        const response = await api.get<Farm[]>("/farms"); // Endpoint que retorna as fazendas
         setFarms(response.data);
       } catch (error) {
-        console.error('Erro ao carregar as fazendas:', error);
+        console.error("Erro ao carregar as fazendas:", error);
       }
     };
 
@@ -44,32 +34,37 @@ const CreateCrop: React.FC<{ onCancel: () => void }> = ({ onCancel }) => {
     setFormData({ ...formData, [name]: value });
   };
 
-  // Atualiza a fazenda selecionada
+  // Atualiza a fazenda selecionada e o farmId no formData
   const handleFarmChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    setSelectedFarmId(Number(e.target.value));
+    const farmId = Number(e.target.value);
+    setFormData({ ...formData, farmId }); // Atualiza diretamente o farmId no formData
   };
 
-  // Envia o formulário
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (!selectedFarmId) {
-      setMessage('Por favor, selecione uma fazenda.');
+    if (!formData.farmId) {
+      setMessage("Por favor, selecione uma fazenda.");
       return;
     }
 
     try {
-      const response = await api.post(`/farms/${selectedFarmId}/crops`, formData);
+      // Enviando o formData com farmId incluído no corpo e no endpoint
+      const response = await api.post(`/farms/${formData.farmId}/crops`, {
+        ...formData, // Inclui o farmId e outros campos
+      });
+
       setMessage(`Plantação de ${response.data.name} criada com sucesso!`);
       setFormData({
-        name: '',
+        name: "",
         plantedArea: 0,
-        plantedDate: '',
-        harvestDate: '',
+        plantedDate: "",
+        harvestDate: "",
+        farmId: 0,
       });
     } catch (error) {
-      console.error('Erro ao criar a plantação:', error);
-      setMessage('Erro ao criar plantação. Tente novamente.');
+      console.error("Erro ao criar a plantação:", error);
+      setMessage("Erro ao criar plantação. Tente novamente.");
     }
   };
 
@@ -181,7 +176,7 @@ const CreateCrop: React.FC<{ onCancel: () => void }> = ({ onCancel }) => {
         <div className="flex justify-between items-center">
           <button
             type="button"
-            onClick={onCancel} // Chama a função onCancel ao clicar em "Cancelar"
+            onClick={onCancel}
             className="bg-gray-400 text-white py-2 px-4 rounded-md hover:bg-red-500"
           >
             Cancelar

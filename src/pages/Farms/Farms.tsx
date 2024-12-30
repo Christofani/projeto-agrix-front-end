@@ -33,19 +33,18 @@ function Farms() {
     <div className="font-quicksand bg-teal-100 min-h-screen w-full overflow-x-hidden">
       <Header />
 
-      {/* Exibe botões e imagem quando activePage for 'none' */}
       {activePage === "none" && showImage && (
         <div className="flex justify-center mt-4 p-4">
-          <div className="space-x-4">
+          <div className="flex flex-col items-center mt-4 p-4 space-y-4 sm:flex-row sm:space-y-0 sm:space-x-6">
             <button
               onClick={() => handlePageChange("create")}
-              className="bg-gray-500 text-white py-2 px-4 rounded-md hover:bg-gray-600"
+              className="bg-gray-500 text-white w-full max-w-xs sm:w-auto py-2 px-6 rounded-md hover:bg-gray-600"
             >
               Criar nova Fazenda
             </button>
             <button
               onClick={() => handlePageChange("list")}
-              className="bg-teal-700 text-white py-2 px-4 rounded-md hover:bg-teal-900"
+              className="bg-teal-700 text-white w-full max-w-xs sm:w-auto py-2 px-6 rounded-md hover:bg-teal-900"
             >
               Listar Fazendas
             </button>
@@ -66,10 +65,10 @@ function Farms() {
 
       {/* Formulário de criação de fazenda */}
       {activePage === "create" && (
-        <div className="p-4 md:p-8">
+        <div className="p-2 md:p-4">
           <button
             onClick={handleCancel}
-            className="text-teal-700 hover:text-teal-900 flex items-center mb-6"
+            className="text-teal-700 hover:text-teal-900 flex items-center"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -92,10 +91,10 @@ function Farms() {
 
       {/* Lista de fazendas */}
       {activePage === "list" && (
-        <div className="p-4 md:p-8">
+        <div className="p-2 md:p-4">
           <button
             onClick={handleCancel}
-            className="text-teal-700 hover:text-teal-900 flex items-center mb-6"
+            className="text-teal-700 hover:text-teal-900 flex items-center "
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"

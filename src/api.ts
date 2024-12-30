@@ -4,18 +4,16 @@ const api = axios.create({
   baseURL: "http://localhost:8080",
 });
 
-// Adiciona um interceptor para incluir o token no cabeçalho
-// Resolver problema de token 
+
 api.interceptors.request.use(
   (config) => {
-    const token = localStorage.getItem("token"); // Obtém o token do localStorage ou outro método de armazenamento
+    const token = localStorage.getItem("token");
     if (token) {
-      config.headers.Authorization = `Bearer ${token}`; // Define o token no cabeçalho Authorization
+      config.headers.Authorization = `Bearer ${token}`;
     }
     return config;
   },
   (error) => {
-    // Lida com erros antes de enviar a requisição
     return Promise.reject(error);
   }
 );

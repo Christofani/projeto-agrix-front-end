@@ -34,17 +34,17 @@ function Crops() {
     <div className="font-quicksand bg-teal-100 min-h-screen w-full overflow-x-hidden ">
       <Header />
       {activePage === "none" && showImage && (
-        <div className="flex justify-center mt-4 p-4 font-quicksand">
-          <div className="space-x-4">
+        <div className="flex justify-center mt-4 p-4">
+          <div className="flex flex-col items-center mt-4 p-4 space-y-4 sm:flex-row sm:space-y-0 sm:space-x-4">
             <button
-              onClick={() => handlePageChange("create")} // Ao clicar, exibe o formulário
-              className="bg-gray-500 text-white py-2 px-4 rounded-md hover:bg-gray-600"
+              onClick={() => handlePageChange("create")}
+              className="bg-gray-500 text-white w-full max-w-xs sm:w-auto py-2 px-4 rounded-md hover:bg-gray-600"
             >
-              Criar nova plantação
+              Criar nova Plantação
             </button>
             <button
-              onClick={() => handlePageChange("list")} // Para listar as fazendas
-              className="bg-teal-700 text-white py-2 px-4 rounded-md hover:bg-teal-900"
+              onClick={() => handlePageChange("list")}
+              className="bg-teal-700 text-white w-full max-w-xs sm:w-auto py-2 px-6 rounded-md hover:bg-teal-900"
             >
               Listar Plantações
             </button>
@@ -56,12 +56,12 @@ function Crops() {
           <img
             src={imagem}
             alt="Imagem ilustrativa"
-            className="w-full sm:max-w-sm h-auto object-cover rounded-lg mb-10"
+            className="w-full max-w-xs sm:max-w-sm h-auto object-cover rounded-lg mb-10"
           />
         </div>
       )}
       {activePage === "create" && (
-        <div className="p-4 md:p-8">
+        <div className="p-2 md:p-4">
           <button
             onClick={handleCancel}
             className="text-teal-700 hover:text-teal-900 flex items-center mb-6"
@@ -85,10 +85,10 @@ function Crops() {
         </div>
       )}
       {activePage === "list" && (
-        <div className="p-4 md:p-8">
+        <div className="p-2 md:p-4">
           <button
             onClick={handleCancel}
-            className="text-teal-700 hover:text-teal-900 flex items-center mb-6"
+            className="text-teal-700 hover:text-teal-900 flex items-center"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -113,7 +113,10 @@ function Crops() {
 
       {activePage === "details" && selectedCropId && (
         <div className="p-4 md:p-8">
-          <CropDetails cropId={selectedCropId} onBack={handleCancel} />
+          <CropDetails
+            cropId={selectedCropId}
+            onBack={() => handlePageChange("list")}
+          />
         </div>
       )}
     </div>

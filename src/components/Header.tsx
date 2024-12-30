@@ -2,30 +2,36 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 
 const Header: React.FC = () => {
-  // Recupera o nome do usuário armazenado no localStorage
-  const username = localStorage.getItem('username') || 'Usuário';
+  // Recupera o nome do usuário do localStorage
+  const userName = localStorage.getItem("username");
 
   return (
-    <header className="bg-teal-900 text-white p-4 font-quicksand">
+    <header className="bg-teal-900 text-white p-3 font-quicksand">
       <div className="max-w-7xl mx-auto flex justify-between items-center">
-        <nav className="flex space-x-4">
-          <Link to="/home" className="hover:bg-teal-700 px-3 py-2 rounded-md">
+        {/* Navegação */}
+        <nav className="flex space-x-2">
+          <Link to="/home" className="hover:bg-teal-700 px-2 py-1 rounded-md">
             Home
           </Link>
-          <Link to="/farms" className="hover:bg-teal-700 px-3 py-2 rounded-md">
+          <Link to="/farms" className="hover:bg-teal-700 px-2 py-1 rounded-md">
             Farms
           </Link>
-          <Link to="/crops" className="hover:bg-teal-700 px-3 py-2 rounded-md">
+          <Link to="/crops" className="hover:bg-teal-700 px-2 py-1 rounded-md">
             Crops
           </Link>
           <Link
             to="/fertilizers"
-            className="hover:bg-teal-700 px-3 py-2 rounded-md"
+            className="hover:bg-teal-700 px-2 py-1 rounded-md"
           >
             Fertilizers
           </Link>
         </nav>
-        <div className="text-right flex items-center space-x-2">
+
+        {/* Ícone do usuário e nome */}
+        <div className="flex items-center space-x-4">
+          {/* Nome do usuário exibido em telas grandes */}
+          <span className="hidden lg:block text-white">{userName}</span>
+
           <svg
             xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 24 24"
@@ -38,7 +44,6 @@ const Header: React.FC = () => {
               clipRule="evenodd"
             />
           </svg>
-          <span className="text-lg font-medium">{username}</span>
         </div>
       </div>
     </header>
@@ -46,4 +51,3 @@ const Header: React.FC = () => {
 };
 
 export default Header;
-
