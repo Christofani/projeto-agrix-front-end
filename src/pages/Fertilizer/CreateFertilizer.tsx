@@ -1,15 +1,15 @@
-import React from "react";
+import React, { useState } from "react";
 import { CreateFertilizerType, Fertilizer } from "../../types/FertilizerType";
 import api from "../../api";
 
 const CreateFertilizer: React.FC<{ onCancel: () => void }> = ({ onCancel }) => {
-  const [formData, setFormData] = React.useState<CreateFertilizerType>({
+  const [formData, setFormData] = useState<CreateFertilizerType>({
     name: "",
     brand: "",
     composition: "",
   });
-  const [message, setMessage] = React.useState<string | null>(null);
-  const [error, setError] = React.useState<string | null>(null);
+  const [message, setMessage] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -18,16 +18,24 @@ const CreateFertilizer: React.FC<{ onCancel: () => void }> = ({ onCancel }) => {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    setIsLoading(true);
 
     try {
       await api.post<Fertilizer>("/fertilizers", formData);
-      setMessage("Fertilizante criado com sucesso!");
+
+      // Mensagem de sucesso
+      setMessage("✅ Fertilizante criado com sucesso!");
+      setTimeout(() => {
+        onCancel(); // Voltar para a página anterior
+      }, 1000);
+
+      // Limpar formulário
       setFormData({ name: "", brand: "", composition: "" });
-      setError(null);
     } catch (error) {
       console.error("Erro ao criar fertilizante:", error);
-      setError("Erro ao criar fertilizante.");
-      setMessage(null);
+      setMessage("❌ Erro ao criar fertilizante. Tente novamente.");
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -37,9 +45,16 @@ const CreateFertilizer: React.FC<{ onCancel: () => void }> = ({ onCancel }) => {
         Criar Novo Fertilizante
       </h1>
 
-      {/* Mensagem de erro ou sucesso */}
-      {message && <p className="mb-4 text-green-600 text-center">{message}</p>}
-      {error && <p className="mb-4 text-red-600 text-center">{error}</p>}
+      {isLoading && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="text-white text-lg flex flex-col items-center">
+            <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-teal-400 border-solid mb-4"></div>
+          </div>
+        </div>
+      )}
+
+      {/* Mensagem de sucesso ou erro */}
+      {message && <p className="mb-4 text-center">{message}</p>}
 
       <form onSubmit={handleSubmit}>
         {/* Nome do fertilizante */}
@@ -99,14 +114,16 @@ const CreateFertilizer: React.FC<{ onCancel: () => void }> = ({ onCancel }) => {
             type="button"
             onClick={onCancel}
             className="bg-gray-400 text-white py-2 px-4 rounded-md hover:bg-red-500"
+            disabled={isLoading}
           >
             Cancelar
           </button>
           <button
             type="submit"
             className="bg-gray-500 text-white py-2 px-4 rounded-md hover:bg-green-600"
+            disabled={isLoading}
           >
-            Criar
+            {isLoading ? "Criando..." : "Criar"}
           </button>
         </div>
       </form>

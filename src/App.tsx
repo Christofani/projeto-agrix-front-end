@@ -1,44 +1,66 @@
-import { Route, Routes } from 'react-router-dom';
-import './App.css'
-import CreateUserPage from './pages/User/User';
-import Login from './pages/Login/Login';
-import Home from './pages/Home/Home';
+import { Route, Routes } from "react-router-dom";
+import "./App.css";
+import CreateUserPage from "./pages/User/User";
+import Login from "./pages/Login/Login";
+import Home from "./pages/Home/Home";
 import Farm from "./pages/Farms/Farms";
 import Crop from "./pages/Crops/Crop";
-import CreateFarm from "./pages/Farms/CreateFarm";
 import Fertilizer from "./pages/Fertilizer/Fertilizer";
-import { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
 import EditUserPage from "./pages/User/EditingUser";
+import NotFound from "./pages/NotFound";
+import ProtectedRoute from "./components/ProtectRoutes";
 
 function App() {
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    const token = localStorage.getItem("token");
-
-    if (token) {
-      const tokenExpiration = localStorage.getItem("tokenExpiration");
-      if (tokenExpiration && new Date().getTime() > parseInt(tokenExpiration)) {
-        // Token expirado
-        localStorage.removeItem("token");
-        localStorage.removeItem("username");
-        localStorage.removeItem("tokenExpiration");
-        navigate("/login");
-      }
-    }
-  }, [navigate]);
-
   return (
     <Routes>
+      {/* Rotas públicas */}
       <Route path="/" element={<CreateUserPage />} />
       <Route path="/login" element={<Login />} />
-      <Route path="/home" element={<Home />} />
-      <Route path="/farms" element={<Farm />} />
-      <Route path="/farms/create" element={<CreateFarm />} />
-      <Route path="/crops" element={<Crop />} />
-      <Route path="/fertilizers" element={<Fertilizer />} />
-      <Route path="/edit-user" element={<EditUserPage />} />
+
+      {/* Rotas protegidas */}
+      <Route
+        path="/home"
+        element={
+          <ProtectedRoute>
+            <Home />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/farms"
+        element={
+          <ProtectedRoute>
+            <Farm />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/crops"
+        element={
+          <ProtectedRoute>
+            <Crop />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/fertilizers"
+        element={
+          <ProtectedRoute>
+            <Fertilizer />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/edit-user"
+        element={
+          <ProtectedRoute>
+            <EditUserPage />
+          </ProtectedRoute>
+        }
+      />
+
+      {/* Rota para páginas não encontradas */}
+      <Route path="*" element={<NotFound />} />
     </Routes>
   );
 }

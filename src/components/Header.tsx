@@ -19,32 +19,41 @@ const Header: React.FC = () => {
   };
 
   return (
-    <header className="bg-teal-900 text-white p-3 font-quicksand">
-      <div className="max-w-7xl mx-auto flex justify-between items-center relative">
+    <header className="bg-teal-900 text-white sm:p-2 md:p-2 lg:p-2 font-quicksand">
+      <div className="mx-auto flex justify-between items-center relative 2xl:justify-between">
         {/* Navegação */}
-        <nav className="flex space-x-2">
-          <Link to="/home" className="hover:bg-teal-700 px-2 py-1 rounded-md">
-            Home
+        <nav className="flex space-x-0.5 px-1 py-1 my-0.5 sm:px-2 sm:py-1 md:px-2 md:py-1 lg:px-0.5 lg:py-1">
+          <Link
+            to="/home"
+            className="hover:bg-teal-700 px-1 py-1 rounded-md sm:px-2 sm:py-1 md:px-2 md:py-1 lg:px-5 lg:py-1"
+          >
+            Início
           </Link>
-          <Link to="/farms" className="hover:bg-teal-700 px-2 py-1 rounded-md">
-            Farms
+          <Link
+            to="/farms"
+            className="hover:bg-teal-700 px-1 py-1 rounded-md sm:px-2 sm:py-1 md:px-2 md:py-1 lg:px-5 lg:py-1"
+          >
+            Fazendas
           </Link>
-          <Link to="/crops" className="hover:bg-teal-700 px-2 py-1 rounded-md">
-            Crops
+          <Link
+            to="/crops"
+            className="hover:bg-teal-700 px-1 py-1 rounded-md sm:px-2 sm:py-1 md:px-2 md:py-1 lg:px-5 lg:py-1"
+          >
+            Plantações
           </Link>
           <Link
             to="/fertilizers"
-            className="hover:bg-teal-700 px-2 py-1 rounded-md"
+            className="hover:bg-teal-700 px-1 py-1 rounded-md sm:px-2 sm:py-1 md:px-2 md:py-1 lg:px-5 lg:py-1"
           >
-            Fertilizers
+            Fertilizantes
           </Link>
         </nav>
 
         {/* Ícone do usuário e nome */}
-        <div className="relative flex items-center space-x-4 cursor-pointer">
+        <div className="relative flex items-center space-x-2 cursor-pointer hover:bg-teal-700 px-1 py-1 rounded-md sm:px-1 sm:py-1 md:px-1 md:py-1 lg:px-1 lg:py-1">
           {/* Nome do usuário exibido em telas grandes */}
           <span
-            className="hidden lg:block text-white cursor-pointer"
+            className="hidden lg:block text-white cursor-pointer hover:text-gray-200"
             onClick={() => setIsMenuOpen(!isMenuOpen)}
           >
             {userName}

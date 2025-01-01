@@ -11,6 +11,10 @@ export default {
         lora: ['Lora', 'serif'],
         pacifico: ['Pacifico', 'cursive'],
       },
+      width: {
+        '65': '65%',
+        '35': '35%',
+      },
     },
   },
   plugins: [],

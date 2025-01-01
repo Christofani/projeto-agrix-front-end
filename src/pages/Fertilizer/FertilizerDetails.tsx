@@ -65,7 +65,13 @@ const FertilizerDetails: React.FC<FertilizerDetailsProps> = ({
   };
 
   if (loading) {
-    return <p className="text-center text-gray-600">Carregando detalhes...</p>;
+    return (
+      <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+        <div className="text-white text-lg flex flex-col items-center">
+          <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-teal-400 border-solid mb-4"></div>
+        </div>
+      </div>
+    );
   }
 
   if (error) {

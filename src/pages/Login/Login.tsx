@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import api from "../../api"; // Configuração do Axios
 
@@ -11,6 +11,19 @@ const Login: React.FC = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [rememberMe, setRememberMe] = useState(false);
   const navigate = useNavigate();
+
+  // Inicializa o estado do "Remember Me" e preenche o username se necessário
+  useEffect(() => {
+    const savedRememberMe = localStorage.getItem("rememberMe") === "true";
+    setRememberMe(savedRememberMe);
+
+    if (savedRememberMe) {
+      const savedUsername = localStorage.getItem("username");
+      if (savedUsername) {
+        setCredentials((prev) => ({ ...prev, username: savedUsername }));
+      }
+    }
+  }, []);
 
   // Atualiza os campos de login
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -28,27 +41,29 @@ const Login: React.FC = () => {
     setRememberMe(e.target.checked);
   };
 
-  // Realiza a requisição de login
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true); // Inicia o carregamento
     try {
+      // Limpa qualquer token antigo antes de fazer login
+      localStorage.removeItem("token");
+
       const response = await api.post("/auth/login", credentials);
       const { token } = response.data;
 
-      // Armazena o token e o nome de usuário no localStorage
+      // Armazena o token no localStorage
       localStorage.setItem("token", token);
-      localStorage.setItem("username", credentials.username);
-      localStorage.setItem("password", credentials.password);
 
       if (rememberMe) {
-        localStorage.setItem("rememberMe", "true"); // Salva a opção "remember me"
+        localStorage.setItem("rememberMe", "true");
+        localStorage.setItem("username", credentials.username);
       } else {
         localStorage.removeItem("rememberMe");
+        localStorage.removeItem("username");
       }
 
-      // Redireciona para a página principal ou a rota protegida
-      navigate("/home"); // Substitua com a rota desejada
+      // Redireciona para a página principal
+      navigate("/home");
     } catch (error) {
       console.error("Erro ao fazer login:", error);
       alert("Credenciais inválidas. Tente novamente."); // Exibe um alert em vez de uma mensagem
@@ -72,13 +87,13 @@ const Login: React.FC = () => {
         onSubmit={handleSubmit}
         className="bg-white px-14 py-10 rounded-xl shadow-lg text-center w-96"
       >
-        <h1 className="text-6xl mb-10">Sign In</h1>
+        <h1 className="text-6xl mb-10">Entrar</h1>
         <fieldset className="mb-4">
           <input
             type="text"
             id="username"
             name="username"
-            placeholder="Username"
+            placeholder="Nome de usuário"
             value={credentials.username}
             onChange={handleChange}
             required
@@ -92,7 +107,7 @@ const Login: React.FC = () => {
             name="password"
             value={credentials.password}
             onChange={handleChange}
-            placeholder="Password"
+            placeholder="Senha"
             required
             className="w-full block bg-black rounded p-2 text-white"
           />
@@ -137,14 +152,14 @@ const Login: React.FC = () => {
               onChange={handleRememberMeChange}
               className="mr-1 cursor-pointer accent-black"
             />
-            Remember me
+            Lembrar de mim
           </label>
         </fieldset>
         <button
           type="submit"
           className="w-full bg-teal-500 p-3 rounded-lg hover:bg-teal- hover:text-white shadow-md"
         >
-          Login
+          Conecte-se
         </button>
         <div className="mt-4 text-center">
           <p>

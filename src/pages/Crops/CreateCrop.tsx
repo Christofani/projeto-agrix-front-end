@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import api from '../../api'; // Importa a configuração do Axios
+import React, { useState, useEffect } from "react";
+import api from "../../api"; // Importa a configuração do Axios
 import { CreateCropType } from "../../types/CropType";
 import { Farm } from "../../types/FarmType";
 
@@ -10,9 +10,10 @@ const CreateCrop: React.FC<{ onCancel: () => void }> = ({ onCancel }) => {
     plantedArea: 0,
     plantedDate: "",
     harvestDate: "",
-    farmId: 0, // Certifique-se de que o farmId seja inicializado
+    farmId: 0,
   });
   const [message, setMessage] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
 
   // Carrega as fazendas disponíveis para o select
   useEffect(() => {
@@ -37,24 +38,29 @@ const CreateCrop: React.FC<{ onCancel: () => void }> = ({ onCancel }) => {
   // Atualiza a fazenda selecionada e o farmId no formData
   const handleFarmChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const farmId = Number(e.target.value);
-    setFormData({ ...formData, farmId }); // Atualiza diretamente o farmId no formData
+    setFormData({ ...formData, farmId });
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setIsLoading(true);
 
     if (!formData.farmId) {
-      setMessage("Por favor, selecione uma fazenda.");
+      setMessage("❌ Por favor, selecione uma fazenda.");
+      setIsLoading(false);
       return;
     }
 
     try {
-      // Enviando o formData com farmId incluído no corpo e no endpoint
       const response = await api.post(`/farms/${formData.farmId}/crops`, {
-        ...formData, // Inclui o farmId e outros campos
+        ...formData,
       });
 
-      setMessage(`Plantação de ${response.data.name} criada com sucesso!`);
+      setMessage(`✅ Plantação de ${response.data.name} criada com sucesso!`);
+      setTimeout(() => {
+        onCancel(); // Volta para a página anterior
+      }, 1000);
+
       setFormData({
         name: "",
         plantedArea: 0,
@@ -64,7 +70,9 @@ const CreateCrop: React.FC<{ onCancel: () => void }> = ({ onCancel }) => {
       });
     } catch (error) {
       console.error("Erro ao criar a plantação:", error);
-      setMessage("Erro ao criar plantação. Tente novamente.");
+      setMessage("❌ Erro ao criar plantação. Tente novamente.");
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -73,6 +81,14 @@ const CreateCrop: React.FC<{ onCancel: () => void }> = ({ onCancel }) => {
       <h1 className="text-2xl font-bold mb-6 text-center">
         Criar Nova Plantação
       </h1>
+
+      {isLoading && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="text-white text-lg flex flex-col items-center">
+            <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-teal-400 border-solid mb-4"></div>
+          </div>
+        </div>
+      )}
 
       {/* Mensagem de erro ou sucesso */}
       {message && <p className="mb-4 text-center">{message}</p>}
@@ -184,8 +200,9 @@ const CreateCrop: React.FC<{ onCancel: () => void }> = ({ onCancel }) => {
           <button
             type="submit"
             className="bg-gray-500 text-white py-2 px-4 rounded-md hover:bg-green-600"
+            disabled={isLoading}
           >
-            Criar Plantação
+            {isLoading ? "Criando..." : "Criar Plantação"}
           </button>
         </div>
       </form>

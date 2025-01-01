@@ -116,7 +116,9 @@ const CropList: React.FC<CropListProps> = ({ onNavigate }) => {
 
   if (loading) {
     return (
-      <p className="text-center text-gray-600">Carregando plantações...</p>
+      <div className="fixed inset-0 bg-gray-700 bg-opacity-50 flex justify-center items-center z-50">
+        <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-teal-400 border-solid"></div>
+      </div>
     );
   }
 
@@ -131,59 +133,89 @@ const CropList: React.FC<CropListProps> = ({ onNavigate }) => {
       </h1>
 
       {/* Controles de filtros */}
-      <div className="flex flex-col sm:flex-row justify-center gap-8 mb-6">
-        {/* Filtro de fazenda */}
-        <select
-          value={selectedFarmId || ""}
-          onChange={(e) => handleFarmChange(Number(e.target.value))}
-          className="border p-2 rounded w-full sm:w-64 cursor-pointer"
+      <div
+        className="flex flex-col justify-center gap-10 mb-6
+       sm:flex-col sm:w-full
+       md:flex-col md:w-full
+       lg:flex-row lg:w-full"
+      >
+        <div
+          className="flex flex-col gap-2 w-full
+        sm:flex-row sm:gap-4 sm:w-auto
+        md:flex-row md:w-full
+        lg:w-65"
         >
-          <option value="" disabled className="text-gray-600">
-            Selecione uma fazenda
-          </option>
-          {farms.map((farm) => (
-            <option
-              key={farm.id}
-              value={farm.id}
-              className="cursor-pointer hover:bg-teal-900 hover:text-white"
-            >
-              {farm.name}
+          <select
+            value={selectedFarmId || ""}
+            onChange={(e) => handleFarmChange(Number(e.target.value))}
+            className="border p-2 rounded w-full cursor-pointer
+             sm:w-64
+             md:w-1/2
+             lg:w-1/3"
+          >
+            <option value="" disabled className="text-gray-600">
+              Selecione uma fazenda
             </option>
-          ))}
-        </select>
+            {farms.map((farm) => (
+              <option
+                key={farm.id}
+                value={farm.id}
+                className="cursor-pointer hover:bg-teal-900 hover:text-white"
+              >
+                {farm.name}
+              </option>
+            ))}
+          </select>
 
-        {/* Filtro de intervalo de datas */}
-        <div className="flex flex-col sm:flex-row gap-2 sm:gap-4 w-full sm:w-auto ">
+          {/* Filtro de intervalo de datas */}
           <input
             type="date"
             value={startDate}
             onChange={(e) => setStartDate(e.target.value)}
-            className="border p-2 rounded w-full sm:w-64 hover:bg-gray-100 cursor-pointer"
+            className="border p-2 rounded w-full  hover:bg-gray-100 cursor-pointer
+            sm:w-64
+            md:w-1/2
+            lg:w-1/3"
           />
-          <span className="mx-2 text-gray-600">até</span>
+          <span className="mx-1 text-gray-600">até</span>
           <input
             type="date"
             value={endDate}
             onChange={(e) => setEndDate(e.target.value)}
-            className="border p-2 rounded w-full sm:w-64 hover:bg-gray-100 cursor-pointer"
+            className="border p-2 rounded w-full  hover:bg-gray-100 cursor-pointer
+            sm:w-64
+            md:w-1/2
+            lg:w-1/3"
           />
         </div>
 
-        {/* Botão de aplicar filtro por data */}
-        <button
-          onClick={handleDateFilter}
-          className="bg-teal-700 text-white px-4 py-2 rounded w-50 hover:bg-teal-900"
+        <div
+          className="flex flex-col gap-2 w-full
+          sm:flex-row sm:w-auto
+          md:flex-row 
+          lg:w-35"
         >
-          Filtrar por datas
-        </button>
+          <button
+            onClick={handleDateFilter}
+            className="bg-teal-700 text-white px-4 py-2 rounded w-50 hover:bg-teal-900
+            sm:w-1/2
+            md:w-1/2
+            lg:w-1/2"
+          >
+            Filtrar por datas
+          </button>
 
-        {/* Botão de reset */}
-        <button
-          onClick={resetFilters}
-          className="bg-teal-700 text-white px-4 py-2 rounded w-50 hover:bg-teal-900"
-        >
-          Todas as plantações
-        </button>
+          {/* Botão de reset */}
+          <button
+            onClick={resetFilters}
+            className="bg-teal-700 text-white px-4 py-2 rounded  hover:bg-teal-900
+            sm:w-1/2
+            md:w-1/2 
+            lg:w-1/2"
+          >
+            Todas as plantações
+          </button>
+        </div>
       </div>
 
       {/* Exibir plantações filtradas */}
