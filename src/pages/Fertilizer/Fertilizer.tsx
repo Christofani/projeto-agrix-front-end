@@ -108,9 +108,13 @@ function Fertilizer() {
             </svg>
           </button>
           <FertilizerList
-            onNavigate={(fertilizerId) =>
-              handlePageChange("details", fertilizerId)
-            }
+            onNavigate={(fertilizerId) => {
+              if (fertilizerId) {
+                handlePageChange("details", fertilizerId); // Vai para os detalhes da fazenda
+              } else {
+                handlePageChange("create"); // Vai para a criação da fazenda, sem farmId
+              }
+            }}
           />
         </div>
       )}

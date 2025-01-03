@@ -36,17 +36,35 @@ const FarmList: React.FC<FarmListProps> = ({ onNavigate }) => {
   }
 
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 p-4 md:p-8 my-10">
-      {farms.map((farm) => (
-        <div
-          key={farm.id}
-          className="p-4 bg-gray-100 rounded-lg shadow-md cursor-pointer hover:bg-gray-200"
-          onClick={() => onNavigate(farm.id)}
-        >
-          <h3 className="text-xl font-bold text-gray-700">{farm.name}</h3>
-          <p className="text-gray-600">Tamanho: {farm.size} hectares</p>
+    <div className="p-4 md:p-2">
+      <h1 className="text-2xl font-bold text-center mb-6">Lista de Fazendas</h1>
+      {farms.length === 0 ? (
+        // Centraliza a mensagem e o botão
+        <div className="flex justify-center items-center flex-col space-y-4 mt-10">
+          <p className="text-center font-semibold text-lg text-gray-700">
+            Não há fazendas cadastradas. Crie uma nova fazenda
+          </p>
+          <button
+            onClick={() => onNavigate()} // Chama onNavigate para ir para a criação
+            className="bg-teal-700 text-white py-2 px-6 rounded-md hover:bg-teal-600"
+          >
+            Criar nova Fazenda
+          </button>
         </div>
-      ))}
+      ) : (
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mt-4">
+          {farms.map((farm) => (
+            <div
+              key={farm.id}
+              className="p-4 bg-gray-100 rounded-lg shadow-md cursor-pointer hover:bg-gray-200"
+              onClick={() => onNavigate(farm.id)} // Passa o farmId para navegação
+            >
+              <h3 className="text-xl font-bold text-gray-700">{farm.name}</h3>
+              <p className="text-gray-600">Tamanho: {farm.size} hectares</p>
+            </div>
+          ))}
+        </div>
+      )}
     </div>
   );
 };

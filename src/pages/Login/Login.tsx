@@ -47,19 +47,19 @@ const Login: React.FC = () => {
     try {
       // Limpa qualquer token antigo antes de fazer login
       localStorage.removeItem("token");
+      localStorage.removeItem("username");
 
       const response = await api.post("/auth/login", credentials);
       const { token } = response.data;
 
       // Armazena o token no localStorage
       localStorage.setItem("token", token);
+      localStorage.setItem("username", credentials.username);
 
       if (rememberMe) {
         localStorage.setItem("rememberMe", "true");
-        localStorage.setItem("username", credentials.username);
       } else {
         localStorage.removeItem("rememberMe");
-        localStorage.removeItem("username");
       }
 
       // Redireciona para a página principal

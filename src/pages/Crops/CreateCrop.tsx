@@ -57,6 +57,8 @@ const CreateCrop: React.FC<{ onCancel: () => void }> = ({ onCancel }) => {
       });
 
       setMessage(`✅ Plantação de ${response.data.name} criada com sucesso!`);
+
+      
       setTimeout(() => {
         onCancel(); // Volta para a página anterior
       }, 1000);
@@ -68,6 +70,8 @@ const CreateCrop: React.FC<{ onCancel: () => void }> = ({ onCancel }) => {
         harvestDate: "",
         farmId: 0,
       });
+      console.log("Plantação criada com sucesso:", response.data);
+      
     } catch (error) {
       console.error("Erro ao criar a plantação:", error);
       setMessage("❌ Erro ao criar plantação. Tente novamente.");

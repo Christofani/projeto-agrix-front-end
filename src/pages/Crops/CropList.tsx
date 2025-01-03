@@ -126,137 +126,123 @@ const CropList: React.FC<CropListProps> = ({ onNavigate }) => {
     return <p className="text-center text-red-600">{error}</p>;
   }
 
+  const showFilters = filteredCrops.length > 0;
+
   return (
     <div className="p-4 md:p-2">
       <h1 className="text-2xl font-bold text-center mb-6">
         Lista de Plantações
       </h1>
-
-      {/* Controles de filtros */}
-      <div
-        className="flex flex-col justify-center gap-10 mb-6
-       sm:flex-col sm:w-full
-       md:flex-col md:w-full
-       lg:flex-row lg:w-full"
-      >
-        <div
-          className="flex flex-col gap-2 w-full
-        sm:flex-row sm:gap-4 sm:w-auto
-        md:flex-row md:w-full
-        lg:w-65"
-        >
-          <select
-            value={selectedFarmId || ""}
-            onChange={(e) => handleFarmChange(Number(e.target.value))}
-            className="border p-2 rounded w-full cursor-pointer
-             sm:w-64
-             md:w-1/2
-             lg:w-1/3"
+      {/* Condição de mostrar a mensagem interativa */}
+      {filteredCrops.length === 0 && (
+        <div className="flex flex-col items-center justify-center space-y-4 mt-10">
+          <p className="text-lg font-semibold text-gray-700 text-center">
+            Não há plantações cadastradas. Crie uma nova plantação.
+          </p>
+          <button
+            onClick={() => onNavigate()}
+            className="bg-teal-700 text-white px-4 py-2 rounded w-50 hover:bg-teal-900"
           >
-            <option value="" disabled className="text-gray-600">
-              Selecione uma fazenda
-            </option>
-            {farms.map((farm) => (
-              <option
-                key={farm.id}
-                value={farm.id}
-                className="cursor-pointer hover:bg-teal-900 hover:text-white"
-              >
-                {farm.name}
+            Criar Nova Plantação
+          </button>
+        </div>
+      )}
+
+      {/* Controles de filtros, visíveis apenas se houver plantações */}
+      {showFilters && (
+        <div className="flex flex-col justify-center gap-10 mb-6 sm:flex-col sm:w-full md:flex-col md:w-full lg:flex-row lg:w-full">
+          <div className="flex flex-col gap-2 w-full sm:flex-row sm:gap-4 sm:w-auto md:flex-row md:w-full lg:w-65">
+            <select
+              value={selectedFarmId || ""}
+              onChange={(e) => handleFarmChange(Number(e.target.value))}
+              className="border p-2 rounded w-full cursor-pointer sm:w-64 md:w-1/2 lg:w-1/3"
+            >
+              <option value="" disabled className="text-gray-600">
+                Selecione uma fazenda
               </option>
-            ))}
-          </select>
+              {farms.map((farm) => (
+                <option
+                  key={farm.id}
+                  value={farm.id}
+                  className="cursor-pointer hover:bg-teal-900 hover:text-white"
+                >
+                  {farm.name}
+                </option>
+              ))}
+            </select>
 
-          {/* Filtro de intervalo de datas */}
-          <input
-            type="date"
-            value={startDate}
-            onChange={(e) => setStartDate(e.target.value)}
-            className="border p-2 rounded w-full  hover:bg-gray-100 cursor-pointer
-            sm:w-64
-            md:w-1/2
-            lg:w-1/3"
-          />
-          <span className="mx-1 text-gray-600">até</span>
-          <input
-            type="date"
-            value={endDate}
-            onChange={(e) => setEndDate(e.target.value)}
-            className="border p-2 rounded w-full  hover:bg-gray-100 cursor-pointer
-            sm:w-64
-            md:w-1/2
-            lg:w-1/3"
-          />
+            <input
+              type="date"
+              value={startDate}
+              onChange={(e) => setStartDate(e.target.value)}
+              className="border p-2 rounded w-full hover:bg-gray-100 cursor-pointer sm:w-64 md:w-1/2 lg:w-1/3"
+            />
+            <span className="mx-1 text-gray-600">até</span>
+            <input
+              type="date"
+              value={endDate}
+              onChange={(e) => setEndDate(e.target.value)}
+              className="border p-2 rounded w-full hover:bg-gray-100 cursor-pointer sm:w-64 md:w-1/2 lg:w-1/3"
+            />
+          </div>
+
+          <div className="flex flex-col gap-2 w-full sm:flex-row sm:w-auto md:flex-row lg:w-35">
+            <button
+              onClick={handleDateFilter}
+              className="bg-teal-700 text-white px-4 py-2 rounded w-50 hover:bg-teal-900 sm:w-1/2 md:w-1/2 lg:w-1/2"
+            >
+              Filtrar por datas
+            </button>
+
+            <button
+              onClick={resetFilters}
+              className="bg-teal-700 text-white px-4 py-2 rounded hover:bg-teal-900 sm:w-1/2 md:w-1/2 lg:w-1/2"
+            >
+              Todas as plantações
+            </button>
+          </div>
         </div>
-
-        <div
-          className="flex flex-col gap-2 w-full
-          sm:flex-row sm:w-auto
-          md:flex-row 
-          lg:w-35"
-        >
-          <button
-            onClick={handleDateFilter}
-            className="bg-teal-700 text-white px-4 py-2 rounded w-50 hover:bg-teal-900
-            sm:w-1/2
-            md:w-1/2
-            lg:w-1/2"
-          >
-            Filtrar por datas
-          </button>
-
-          {/* Botão de reset */}
-          <button
-            onClick={resetFilters}
-            className="bg-teal-700 text-white px-4 py-2 rounded  hover:bg-teal-900
-            sm:w-1/2
-            md:w-1/2 
-            lg:w-1/2"
-          >
-            Todas as plantações
-          </button>
-        </div>
-      </div>
+      )}
 
       {/* Exibir plantações filtradas */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-        {filteredCrops.length > 0 ? (
-          filteredCrops.map((crop) => (
-            <div
-              key={crop.id}
-              className="p-4 bg-gray-100 rounded-lg shadow-md cursor-pointer hover:bg-gray-200"
-              onClick={() => onNavigate(crop.id)}
-            >
-              <h3 className="text-xl font-bold text-gray-700">{crop.name}</h3>
-              <p className="text-gray-600">
-                Área plantada: {crop.plantedArea} hectares
-              </p>
-              <p className="text-gray-600">
-                Data de plantio: {crop.plantedDate}
-              </p>
-              <p className="text-gray-600">
-                Data de colheita: {crop.harvestDate}
-              </p>
-              <p className="text-gray-600">Fazenda associada: {crop.farmId}</p>
-              <h4 className="font-semibold mt-4">Fertilizantes:</h4>
-              {crop.fertilizers.length > 0 ? (
-                <ul className="list-disc list-inside">
-                  {crop.fertilizers.map((fertilizer) => (
-                    <li key={fertilizer.id} className="text-gray-600">
-                      {fertilizer.name}
-                    </li>
-                  ))}
-                </ul>
-              ) : (
-                <p className="text-gray-500">Nenhum fertilizante associado.</p>
-              )}
-            </div>
-          ))
-        ) : (
-          <p className="text-gray-600 text-center">
-            Nenhuma plantação encontrada.
-          </p>
-        )}
+        {filteredCrops.length > 0
+          ? filteredCrops.map((crop) => (
+              <div
+                key={crop.id}
+                className="p-4 bg-gray-100 rounded-lg shadow-md cursor-pointer hover:bg-gray-200"
+                onClick={() => onNavigate(crop.id)}
+              >
+                <h3 className="text-xl font-bold text-gray-700">{crop.name}</h3>
+                <p className="text-gray-600">
+                  Área plantada: {crop.plantedArea} hectares
+                </p>
+                <p className="text-gray-600">
+                  Data de plantio: {crop.plantedDate}
+                </p>
+                <p className="text-gray-600">
+                  Data de colheita: {crop.harvestDate}
+                </p>
+                <p className="text-gray-600">
+                  Fazenda associada: {crop.farmId}
+                </p>
+                <h4 className="font-semibold mt-4">Fertilizantes:</h4>
+                {crop.fertilizers.length > 0 ? (
+                  <ul className="list-disc list-inside">
+                    {crop.fertilizers.map((fertilizer) => (
+                      <li key={fertilizer.id} className="text-gray-600">
+                        {fertilizer.name}
+                      </li>
+                    ))}
+                  </ul>
+                ) : (
+                  <p className="text-gray-500">
+                    Nenhum fertilizante associado.
+                  </p>
+                )}
+              </div>
+            ))
+          : null}
       </div>
     </div>
   );

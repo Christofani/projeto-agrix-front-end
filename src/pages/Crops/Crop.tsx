@@ -106,7 +106,13 @@ function Crops() {
             </svg>
           </button>
           <CropList
-            onNavigate={(cropId) => handlePageChange("details", cropId)}
+            onNavigate={(cropId) => {
+              if (cropId) {
+                handlePageChange("details", cropId); // Vai para os detalhes da fazenda
+              } else {
+                handlePageChange("create"); // Vai para a criação da fazenda, sem farmId
+              }
+            }}
           />
         </div>
       )}

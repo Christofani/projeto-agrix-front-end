@@ -19,5 +19,5 @@ export interface CreateFarmProps {
 }
 
 export interface FarmListProps {
-  onNavigate: (farmId: number) => void;
+  onNavigate: (farmId?: number) => void;
 }

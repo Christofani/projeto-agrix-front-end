@@ -21,5 +21,5 @@ export interface CreateFertilizerProps {
 }
 
 export interface FertilizerListProps {
-  onNavigate: (fertilizerId: number) => void;
+  onNavigate: (fertilizerId?: number) => void;
 }

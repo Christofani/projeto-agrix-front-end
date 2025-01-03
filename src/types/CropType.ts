@@ -28,5 +28,5 @@ export interface CreateCropProps {
 }
 
 export interface CropListProps {
-  onNavigate: (cropId: number) => void;
+  onNavigate: (cropId?: number) => void;
 }

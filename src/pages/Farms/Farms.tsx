@@ -112,7 +112,13 @@ function Farms() {
             </svg>
           </button>
           <FarmList
-            onNavigate={(farmId) => handlePageChange("details", farmId)}
+            onNavigate={(farmId) => {
+              if (farmId) {
+                handlePageChange("details", farmId); // Vai para os detalhes da fazenda
+              } else {
+                handlePageChange("create"); // Vai para a criação da fazenda, sem farmId
+              }
+            }}
           />
         </div>
       )}
