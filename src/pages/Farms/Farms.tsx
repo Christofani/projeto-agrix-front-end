@@ -3,7 +3,7 @@ import Header from "../../components/Header";
 import CreateFarm from "./CreateFarm";
 import FarmList from "./FarmList";
 import FarmDetails from "./FarmDetails";
-import imagem from "../../images/370a0abe-4df3-4e0c-a9fc-354d1d1cd50d.webp"; // Substitua pelo caminho correto da sua imagem
+import imagem from "../../images/370a0abe-4df3-4e0c-a9fc-354d1d1cd50d.webp";
 
 function Farms() {
   const [activePage, setActivePage] = useState<
@@ -17,16 +17,16 @@ function Farms() {
     farmId?: number
   ) => {
     setActivePage(page);
-    setShowImage(false); // Esconde a imagem ao mudar de página
+    setShowImage(false);
     if (farmId) {
-      setSelectedFarmId(farmId); // Define o ID da fazenda selecionada, se fornecido
+      setSelectedFarmId(farmId);
     }
   };
 
   const handleCancel = () => {
     setActivePage("none");
-    setShowImage(true); // Volta a mostrar os botões e a imagem
-    setSelectedFarmId(null); // Reseta o ID da fazenda
+    setShowImage(true);
+    setSelectedFarmId(null);
   };
 
   return (
@@ -52,7 +52,6 @@ function Farms() {
         </div>
       )}
 
-      {/* Imagem que será exibida quando activePage for 'none' */}
       {showImage && activePage === "none" && (
         <div className="flex justify-center items-center w-full overflow-hidden">
           <img
@@ -62,8 +61,6 @@ function Farms() {
           />
         </div>
       )}
-
-      {/* Formulário de criação de fazenda */}
       {activePage === "create" && (
         <div className="p-2 md:p-4">
           <button
@@ -89,7 +86,6 @@ function Farms() {
         </div>
       )}
 
-      {/* Lista de fazendas */}
       {activePage === "list" && (
         <div className="p-2 md:p-4">
           <button
@@ -114,16 +110,15 @@ function Farms() {
           <FarmList
             onNavigate={(farmId) => {
               if (farmId) {
-                handlePageChange("details", farmId); // Vai para os detalhes da fazenda
+                handlePageChange("details", farmId);
               } else {
-                handlePageChange("create"); // Vai para a criação da fazenda, sem farmId
+                handlePageChange("create");
               }
             }}
           />
         </div>
       )}
 
-      {/* Detalhes da fazenda */}
       {activePage === "details" && selectedFarmId && (
         <div className="p-4 md:p-8">
           <FarmDetails

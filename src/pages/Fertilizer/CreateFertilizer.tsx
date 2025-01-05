@@ -25,10 +25,9 @@ const CreateFertilizer: React.FC<{ onCancel: () => void }> = ({ onCancel }) => {
     try {
       await api.post<Fertilizer>("/fertilizers", formData);
 
-      // Mensagem de sucesso
       setMessage("✅ Fertilizante criado com sucesso!");
       setTimeout(() => {
-        onCancel(); // Voltar para a página anterior
+        onCancel();
       }, 1000);
 
       // Limpar formulário
@@ -55,11 +54,9 @@ const CreateFertilizer: React.FC<{ onCancel: () => void }> = ({ onCancel }) => {
         </div>
       )}
 
-      {/* Mensagem de sucesso ou erro */}
       {message && <p className="mb-4 text-center">{message}</p>}
 
       <form onSubmit={handleSubmit}>
-        {/* Nome do fertilizante */}
         <div className="mb-4">
           <label htmlFor="name" className="block text-gray-700 font-medium">
             Nome do Fertilizante:
@@ -75,7 +72,6 @@ const CreateFertilizer: React.FC<{ onCancel: () => void }> = ({ onCancel }) => {
           />
         </div>
 
-        {/* Marca */}
         <div className="mb-4">
           <label htmlFor="brand" className="block text-gray-700 font-medium">
             Marca:
@@ -90,8 +86,6 @@ const CreateFertilizer: React.FC<{ onCancel: () => void }> = ({ onCancel }) => {
             required
           />
         </div>
-
-        {/* Composição */}
         <div className="mb-4">
           <label
             htmlFor="composition"
@@ -110,7 +104,6 @@ const CreateFertilizer: React.FC<{ onCancel: () => void }> = ({ onCancel }) => {
           />
         </div>
 
-        {/* Botões de ação */}
         <div className="flex justify-between items-center">
           <button
             type="button"

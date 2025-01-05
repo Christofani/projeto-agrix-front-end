@@ -24,7 +24,6 @@ const FertilizerDetails: React.FC<FertilizerDetailsProps> = ({
   const [isUserRole, setIsUserRole] = React.useState<boolean>(false);
 
   useEffect(() => {
-    // Verifica a role no localStorage
     const userRole = localStorage.getItem("role");
     if (userRole === "USER") {
       setIsUserRole(true);
@@ -59,7 +58,7 @@ const FertilizerDetails: React.FC<FertilizerDetailsProps> = ({
     try {
       await api.delete(`/fertilizers/${fertilizerId}`);
       alert("Fertilizante excluído com sucesso.");
-      onBack(); // Voltar para a lista após excluir
+      onBack();
     } catch (error) {
       if (error instanceof AxiosError && error.response) {
         const errorMessage = error.response.data as string;
@@ -76,7 +75,7 @@ const FertilizerDetails: React.FC<FertilizerDetailsProps> = ({
       await api.put(`/fertilizers/${fertilizerId}`, formData);
       alert("Fertilizante atualizado com sucesso.");
       setEditing(false);
-      setFertilizer((prev) => (prev ? { ...prev, ...formData } : null)); // Atualiza os dados localmente
+      setFertilizer((prev) => (prev ? { ...prev, ...formData } : null));
     } catch (error) {
       if (error instanceof AxiosError && error.response) {
         const errorMessage = error.response.data as string;

@@ -1,7 +1,7 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-/* globals.css */
+
 html,
 body {
   @apply overflow-x-hidden;

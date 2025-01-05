@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import api from "../../api"; // Configuração do Axios
+import api from "../../api";
 import { Farm, CreateFarmProps } from "../../types/FarmType";
 import { PersonInfoDto } from "../../types/PersonType";
 import { AxiosError } from "axios";
@@ -8,13 +8,12 @@ const CreateFarm: React.FC<CreateFarmProps> = ({ onCancel }) => {
   const [formData, setFormData] = useState({
     name: "",
     size: 0,
-    person: { personId: 0, username: "" }, // Atualizado para objeto person
+    person: { personId: 0, username: "" },
   });
   const [isLoading, setIsLoading] = useState(false);
-  const [persons, setPersons] = useState<PersonInfoDto[]>([]); // Atualizado para PersonInfoDto
-  const userRole = localStorage.getItem("role"); // Obtém a role do usuário logado
+  const [persons, setPersons] = useState<PersonInfoDto[]>([]);
+  const userRole = localStorage.getItem("role");
 
-  // Busca usuários disponíveis no back-end (apenas para administradores/gerentes)
   useEffect(() => {
     if (userRole === "ADMIN" || userRole === "MANAGER") {
       const fetchPersons = async () => {
@@ -35,7 +34,6 @@ const CreateFarm: React.FC<CreateFarmProps> = ({ onCancel }) => {
   ) => {
     const { name, value } = e.target;
 
-    // Atualizando o formData corretamente para os tipos
     if (name === "person") {
       const selectedPerson = persons.find(
         (person) => person.personId.toString() === value

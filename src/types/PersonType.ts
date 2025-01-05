@@ -1,5 +1,4 @@
- // Supondo que Role já esteja tipado em outro arquivo
-import { Farm } from "./FarmType"; // Supondo que Farm já esteja tipado em outro arquivo
+import { Farm } from "./FarmType"; 
 
 export interface Person {
   personId: number;

@@ -15,11 +15,10 @@ const CreateCrop: React.FC<{ onCancel: () => void }> = ({ onCancel }) => {
   const [message, setMessage] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
 
-  // Carrega as fazendas disponíveis para o select
   useEffect(() => {
     const fetchFarms = async () => {
       try {
-        const response = await api.get<Farm[]>("/farms"); // Endpoint que retorna as fazendas
+        const response = await api.get<Farm[]>("/farms");
         setFarms(response.data);
       } catch (error) {
         console.error("Erro ao carregar as fazendas:", error);
@@ -29,13 +28,11 @@ const CreateCrop: React.FC<{ onCancel: () => void }> = ({ onCancel }) => {
     fetchFarms();
   }, []);
 
-  // Atualiza os campos do formulário
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
   };
 
-  // Atualiza a fazenda selecionada e o farmId no formData
   const handleFarmChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const farmId = Number(e.target.value);
     setFormData({ ...formData, farmId });
@@ -58,9 +55,8 @@ const CreateCrop: React.FC<{ onCancel: () => void }> = ({ onCancel }) => {
 
       setMessage(`✅ Plantação de ${response.data.name} criada com sucesso!`);
 
-      
       setTimeout(() => {
-        onCancel(); // Volta para a página anterior
+        onCancel();
       }, 1000);
 
       setFormData({
@@ -71,7 +67,6 @@ const CreateCrop: React.FC<{ onCancel: () => void }> = ({ onCancel }) => {
         farmId: 0,
       });
       console.log("Plantação criada com sucesso:", response.data);
-      
     } catch (error) {
       console.error("Erro ao criar a plantação:", error);
       setMessage("❌ Erro ao criar plantação. Tente novamente.");
@@ -93,12 +88,9 @@ const CreateCrop: React.FC<{ onCancel: () => void }> = ({ onCancel }) => {
           </div>
         </div>
       )}
-
-      {/* Mensagem de erro ou sucesso */}
       {message && <p className="mb-4 text-center">{message}</p>}
 
       <form onSubmit={handleSubmit}>
-        {/* Select de Fazendas */}
         <div className="mb-4">
           <label htmlFor="farm" className="block text-gray-700 font-medium">
             Selecione a Fazenda:
@@ -119,7 +111,6 @@ const CreateCrop: React.FC<{ onCancel: () => void }> = ({ onCancel }) => {
           </select>
         </div>
 
-        {/* Nome da plantação */}
         <div className="mb-4">
           <label htmlFor="name" className="block text-gray-700 font-medium">
             Nome da Plantação:
@@ -135,7 +126,6 @@ const CreateCrop: React.FC<{ onCancel: () => void }> = ({ onCancel }) => {
           />
         </div>
 
-        {/* Área plantada */}
         <div className="mb-4">
           <label
             htmlFor="plantedArea"
@@ -154,7 +144,6 @@ const CreateCrop: React.FC<{ onCancel: () => void }> = ({ onCancel }) => {
           />
         </div>
 
-        {/* Data de plantio */}
         <div className="mb-4">
           <label
             htmlFor="plantedDate"
@@ -173,7 +162,6 @@ const CreateCrop: React.FC<{ onCancel: () => void }> = ({ onCancel }) => {
           />
         </div>
 
-        {/* Data de colheita */}
         <div className="mb-4">
           <label
             htmlFor="harvestDate"
@@ -192,7 +180,6 @@ const CreateCrop: React.FC<{ onCancel: () => void }> = ({ onCancel }) => {
           />
         </div>
 
-        {/* Botões de ação */}
         <div className="flex justify-between items-center">
           <button
             type="button"

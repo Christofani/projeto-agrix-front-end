@@ -20,7 +20,7 @@ export interface FarmDetailsProps {
 }
 
 export interface CreateFarmProps {
-  onCancel: () => void; // Função para cancelar
+  onCancel: () => void;
 }
 
 export interface FarmListProps {
