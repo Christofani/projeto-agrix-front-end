@@ -47,7 +47,7 @@ const FertilizerList: React.FC<FertilizerListProps> = ({ onNavigate }) => {
           </p>
           <button
             onClick={() => onNavigate()} // Chama onNavigate para ir para a criação
-            className="bg-teal-500 text-white py-2 px-6 rounded-md hover:bg-teal-600"
+            className="bg-teal-700 text-white py-2 px-6 rounded-md hover:bg-teal-600"
           >
             Criar novo Fertilizante
           </button>

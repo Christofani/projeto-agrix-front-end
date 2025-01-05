@@ -1,13 +1,13 @@
 import React, { useState } from "react";
 import api from "../../api"; // Configuração do Axios
 import { Farm, CreateFarmProps } from "../../types/FarmType";
+import { AxiosError } from "axios";
 
 const CreateFarm: React.FC<CreateFarmProps> = ({ onCancel }) => {
   const [formData, setFormData] = useState({
     name: "",
     size: 0,
   });
-  const [message, setMessage] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
 
   // Atualiza os campos do formulário
@@ -22,22 +22,24 @@ const CreateFarm: React.FC<CreateFarmProps> = ({ onCancel }) => {
     setIsLoading(true); // Ativa o spinner
 
     try {
-      await api.post<Farm>("/farms", formData);
+      const response = await api.post<Farm>("/farms", formData);
 
-      // Mensagem de sucesso com emoji
-      setMessage("✅ Fazenda criada com sucesso!");
-      setTimeout(() => {
-        setMessage(null);
-        onCancel();
-      }, 2000);
+      // Exibe mensagem de sucesso
+      alert(`✅ Fazenda criada com sucesso! ID: ${response.data.id}`);
 
-      // Limpa o formulário
+      // Limpa o formulário e volta para a lista
       setFormData({ name: "", size: 0 });
+      onCancel();
     } catch (error) {
       console.error("Erro ao criar a fazenda:", error);
 
-      // Mensagem de erro com emoji
-      setMessage("❌ Erro ao criar fazenda. Tente novamente.");
+      // Acessa a resposta de erro vinda do backend
+      if (error instanceof AxiosError && error.response) {
+        const errorMessage = error.response.data?.message;
+        alert(`❌ ${errorMessage}`);
+      } else {
+        alert("❌ Erro inesperado ao criar a fazenda.");
+      }
     } finally {
       setIsLoading(false);
     }
@@ -49,6 +51,7 @@ const CreateFarm: React.FC<CreateFarmProps> = ({ onCancel }) => {
         Criar Nova Fazenda
       </h1>
 
+      {/* Spinner de carregamento */}
       {isLoading && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
           <div className="text-white text-lg flex flex-col items-center">
@@ -56,9 +59,6 @@ const CreateFarm: React.FC<CreateFarmProps> = ({ onCancel }) => {
           </div>
         </div>
       )}
-
-      {/* Mensagem de erro ou sucesso */}
-      {message && <p className="mb-4 text-center">{message}</p>}
 
       <form onSubmit={handleSubmit}>
         <div className="mb-4">

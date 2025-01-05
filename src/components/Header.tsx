@@ -10,6 +10,8 @@ const Header: React.FC = () => {
   const handleLogout = () => {
     localStorage.removeItem("token");
     localStorage.removeItem("username");
+    localStorage.removeItem("role");
+    localStorage.removeItem("password");
     navigate("/login");
   };
 

@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { CreateFarm, Farm, FarmDetailsProps } from "../../types/FarmType";
+import { Crop } from "../../types/CropType";
 import api from "../../api";
 
 const FarmDetails: React.FC<FarmDetailsProps> = ({ farmId, onBack }) => {
   const [farm, setFarm] = useState<Farm | null>(null);
+  const [crops, setCrops] = useState<Crop[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
   const [editing, setEditing] = useState<boolean>(false);
@@ -26,7 +28,18 @@ const FarmDetails: React.FC<FarmDetailsProps> = ({ farmId, onBack }) => {
       }
     };
 
+    const fetchCrops = async () => {
+      try {
+        const response = await api.get(`/farms/${farmId}/crops`);
+        setCrops(response.data);
+      } catch (err) {
+        console.error("Erro ao buscar as plantações:", err);
+        setError("Erro ao carregar as plantações.");
+      }
+    };
+
     fetchFarm();
+    fetchCrops();
   }, [farmId]);
 
   const handleDelete = async () => {
@@ -142,6 +155,29 @@ const FarmDetails: React.FC<FarmDetailsProps> = ({ farmId, onBack }) => {
           <p>
             <strong>Tamanho:</strong> {farm.size} hectares
           </p>
+          <h2 className="text-xl font-bold mt-8 mb-4">Plantações Associadas</h2>
+          <div className="max-h-60 md:max-h-60 lg:max-h-60 xl:max-h-60 overflow-y-auto border border-gray-300 rounded-md p-4 bg-gray-50">
+            {crops.length === 0 ? (
+              <p className="text-gray-600 text-center">
+                Não há plantações cadastradas.
+              </p>
+            ) : (
+              <ul className="space-y-2">
+                {crops.map((crop) => (
+                  <li
+                    key={crop.id}
+                    className="p-4 bg-gray-100 rounded-md shadow-sm hover:bg-gray-200"
+                  >
+                    <h3 className="font-bold text-gray-800">{crop.name}</h3>
+                    <p className="text-gray-600">
+                      Área: {crop.plantedArea} hectares
+                    </p>
+                  </li>
+                ))}
+              </ul>
+            )}
+          </div>
+
           <div className="flex justify-between mt-6">
             <button
               onClick={() => setEditing(true)}

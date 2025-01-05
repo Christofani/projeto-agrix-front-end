@@ -5,6 +5,7 @@ import {
   FertilizerDetailsProps,
 } from "../../types/FertilizerType";
 import api from "../../api";
+import { AxiosError } from "axios";
 
 const FertilizerDetails: React.FC<FertilizerDetailsProps> = ({
   fertilizerId,
@@ -31,8 +32,13 @@ const FertilizerDetails: React.FC<FertilizerDetailsProps> = ({
           composition: response.data.composition,
         });
       } catch (error) {
-        console.error("Erro ao buscar o fertilizante:", error);
-        setError("Erro ao carregar o fertilizante.");
+        if (error instanceof AxiosError && error.response) {
+          const errorMessage = error.response.data as string;
+          setError(errorMessage || "Erro ao carregar o fertilizante.");
+        } else {
+          console.error("Erro inesperado ao buscar o fertilizante:", error);
+          setError("Erro inesperado ao carregar o fertilizante.");
+        }
       } finally {
         setLoading(false);
       }
@@ -45,10 +51,15 @@ const FertilizerDetails: React.FC<FertilizerDetailsProps> = ({
     try {
       await api.delete(`/fertilizers/${fertilizerId}`);
       alert("Fertilizante excluído com sucesso.");
-      onBack(); // Volta para a lista após excluir
-    } catch (err) {
-      console.error("Erro ao excluir o fertilizante:", err);
-      alert("Erro ao excluir o fertilizante.");
+      onBack(); // Voltar para a lista após excluir
+    } catch (error) {
+      if (error instanceof AxiosError && error.response) {
+        const errorMessage = error.response.data as string;
+        alert(errorMessage || "Erro ao excluir o fertilizante.");
+      } else {
+        console.error("Erro inesperado ao excluir o fertilizante:", error);
+        alert("Erro inesperado ao excluir o fertilizante.");
+      }
     }
   };
 
@@ -57,10 +68,15 @@ const FertilizerDetails: React.FC<FertilizerDetailsProps> = ({
       await api.put(`/fertilizers/${fertilizerId}`, formData);
       alert("Fertilizante atualizado com sucesso.");
       setEditing(false);
-      setFertilizer({ ...fertilizer!, ...formData }); // Atualiza os dados localmente
-    } catch (err) {
-      console.error("Erro ao editar o fertilizante:", err);
-      alert("Erro ao editar o fertilizante.");
+      setFertilizer((prev) => (prev ? { ...prev, ...formData } : null)); // Atualiza os dados localmente
+    } catch (error) {
+      if (error instanceof AxiosError && error.response) {
+        const errorMessage = error.response.data as string;
+        alert(errorMessage || "Erro ao editar o fertilizante.");
+      } else {
+        console.error("Erro inesperado ao editar o fertilizante:", error);
+        alert("Erro inesperado ao editar o fertilizante.");
+      }
     }
   };
 

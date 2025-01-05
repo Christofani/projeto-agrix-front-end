@@ -2,6 +2,10 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import api from "../../api";
 import { Link } from "react-router-dom";
+import {
+  validatePassword,
+  passwordRules,
+} from "../../utils/validationPassword";
 
 const CreateUserPage: React.FC = () => {
   const [formData, setFormData] = useState({
@@ -13,7 +17,12 @@ const CreateUserPage: React.FC = () => {
   const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
 
-  // Alternar visibilidade da senha
+  const passwordValidation = validatePassword(formData.password);
+
+  const allRulesSatisfied =
+    Object.values(passwordValidation).every(Boolean) &&
+    formData.username.trim().length > 0;
+
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
   };
@@ -27,6 +36,12 @@ const CreateUserPage: React.FC = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    if (!allRulesSatisfied) {
+      alert("❌ Certifique-se de preencher todos os campos corretamente.");
+      return;
+    }
+
     setIsLoading(true);
 
     try {
@@ -57,9 +72,17 @@ const CreateUserPage: React.FC = () => {
 
       <form
         onSubmit={handleSubmit}
-        className="bg-white px-14 py-10 rounded-xl shadow-lg text-center"
+        className="bg-white px-14 py-10 rounded-xl shadow-lg text-center relative"
       >
-        <h1 className="text-6xl mb-10">Criar Usuário</h1>
+        <h1
+          className=" text-4xl mb-10 p-2
+        sm:text-6xl sm:p-0
+        md:text-6xl md:p-0
+        lg:text-6xl lg:p-0
+        xl:text-6xl xl:p-0"
+        >
+          Criar Usuário
+        </h1>
         <fieldset className="mb-4">
           <input
             type="text"
@@ -116,6 +139,28 @@ const CreateUserPage: React.FC = () => {
             )}
           </button>
         </fieldset>
+        {formData.password.length > 1 &&
+          !Object.values(passwordValidation).every(Boolean) && (
+            <div className="absolute text-sm min-w-48 top-1 left-10 mt-8 ml-4 bg-black p-3 rounded-2xl shadow-2xl">
+              <h2 className="font-bold mb-2 text-white">
+                Requisitos da senha:
+              </h2>
+              <ul>
+                {Object.entries(passwordRules).map(([key, description]) => (
+                  <li
+                    key={key}
+                    className={`${
+                      passwordValidation[key as keyof typeof passwordValidation]
+                        ? "text-green-400"
+                        : "text-red-400"
+                    }`}
+                  >
+                    {description}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
         <fieldset className="mb-4">
           <select
             id="role"

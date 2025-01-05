@@ -61,6 +61,9 @@ const FarmList: React.FC<FarmListProps> = ({ onNavigate }) => {
             >
               <h3 className="text-xl font-bold text-gray-700">{farm.name}</h3>
               <p className="text-gray-600">Tamanho: {farm.size} hectares</p>
+              {farm.crops.length > 0 && (
+                <p className="text-gray-600">{farm.crops.length} Plantações</p>
+              )}
             </div>
           ))}
         </div>

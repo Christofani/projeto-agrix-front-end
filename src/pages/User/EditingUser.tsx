@@ -79,11 +79,17 @@ const EditUserPage: React.FC = () => {
       }
 
       setIsLoading(true);
+      // Atualizar o usuário
       await api.put(`/persons/${userId}`, formData, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
       });
+
+      // Atualizar o localStorage com os novos dados
+      localStorage.setItem("username", formData.username);
+      localStorage.setItem("role", formData.role); // Atualizar a role no localStorage
+      localStorage.setItem("password", formData.password);
       setMessage("Usuário atualizado com sucesso!");
       setTimeout(() => navigate("/home"), 1000);
     } catch (error) {
@@ -92,6 +98,7 @@ const EditUserPage: React.FC = () => {
       setIsLoading(false);
     }
   };
+  
 
   const handleDelete = async () => {
     const confirmDelete = window.confirm(

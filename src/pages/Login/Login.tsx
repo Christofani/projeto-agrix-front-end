@@ -19,6 +19,7 @@ const Login: React.FC = () => {
 
     if (savedRememberMe) {
       const savedUsername = localStorage.getItem("username");
+
       if (savedUsername) {
         setCredentials((prev) => ({ ...prev, username: savedUsername }));
       }
@@ -48,6 +49,8 @@ const Login: React.FC = () => {
       // Limpa qualquer token antigo antes de fazer login
       localStorage.removeItem("token");
       localStorage.removeItem("username");
+      localStorage.removeItem("role");
+      localStorage.removeItem("password");
 
       const response = await api.post("/auth/login", credentials);
       const { token } = response.data;
@@ -55,6 +58,7 @@ const Login: React.FC = () => {
       // Armazena o token no localStorage
       localStorage.setItem("token", token);
       localStorage.setItem("username", credentials.username);
+      localStorage.setItem("role", response.data.role);
 
       if (rememberMe) {
         localStorage.setItem("rememberMe", "true");
@@ -69,6 +73,7 @@ const Login: React.FC = () => {
       alert("Credenciais inválidas. Tente novamente."); // Exibe um alert em vez de uma mensagem
     } finally {
       setIsLoading(false); // Finaliza o carregamento
+      // Reseta o estado do "Remember Me"
     }
   };
 

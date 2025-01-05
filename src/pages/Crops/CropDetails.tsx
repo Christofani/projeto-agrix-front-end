@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { CreateCropType, Crop, CropDetailsProps } from "../../types/CropType";
 import { Fertilizer } from "../../types/FertilizerType";
 import api from "../../api";
+import { AxiosError } from "axios";
 
 const CropDetails: React.FC<CropDetailsProps> = ({ cropId, onBack }) => {
   const [crop, setCrop] = useState<Crop | null>(null);
@@ -35,8 +36,13 @@ const CropDetails: React.FC<CropDetailsProps> = ({ cropId, onBack }) => {
           farmId: response.data.farmId,
         });
       } catch (error) {
-        console.error("Erro ao buscar a plantação:", error);
-        setError("Erro ao carregar a plantação.");
+        if (error instanceof AxiosError && error.response) {
+          const errorMessage = error.response.data as string;
+          setError(errorMessage || "Erro ao carregar a plantação.");
+        } else {
+          console.error("Erro inesperado ao buscar a plantação:", error);
+          setError("Erro inesperado ao carregar a plantação.");
+        }
       } finally {
         setLoading(false);
       }
@@ -47,7 +53,13 @@ const CropDetails: React.FC<CropDetailsProps> = ({ cropId, onBack }) => {
         const response = await api.get("/fertilizers");
         setAvailableFertilizers(response.data);
       } catch (error) {
-        console.error("Erro ao buscar fertilizantes:", error);
+        if (error instanceof AxiosError && error.response) {
+          const errorMessage = error.response.data as string;
+          alert(errorMessage || "Erro ao buscar fertilizantes.");
+        } else {
+          console.error("Erro inesperado ao buscar fertilizantes:", error);
+          alert("Erro inesperado ao buscar fertilizantes.");
+        }
       }
     };
 
@@ -60,9 +72,14 @@ const CropDetails: React.FC<CropDetailsProps> = ({ cropId, onBack }) => {
       await api.delete(`/crops/${cropId}`);
       alert("Plantação excluída com sucesso.");
       onBack(); // Voltar para a lista após excluir
-    } catch (err) {
-      console.error("Erro ao excluir a plantação:", err);
-      alert("Erro ao excluir a plantação.");
+    } catch (error) {
+      if (error instanceof AxiosError && error.response) {
+        const errorMessage = error.response.data as string;
+        alert(errorMessage || "Erro ao excluir a plantação.");
+      } else {
+        console.error("Erro inesperado ao excluir a plantação:", error);
+        alert("Erro inesperado ao excluir a plantação.");
+      }
     }
   };
 
@@ -71,10 +88,15 @@ const CropDetails: React.FC<CropDetailsProps> = ({ cropId, onBack }) => {
       await api.put(`/crops/${cropId}`, formData);
       alert("Plantação atualizada com sucesso.");
       setEditing(false);
-      setCrop({ ...crop!, ...formData }); // Atualiza os dados localmente
-    } catch (err) {
-      console.error("Erro ao editar a plantação:", err);
-      alert("Erro ao editar a plantação.");
+      setCrop((prev) => (prev ? { ...prev, ...formData } : null)); // Atualiza os dados localmente
+    } catch (error) {
+      if (error instanceof AxiosError && error.response) {
+        const errorMessage = error.response.data as string;
+        alert(errorMessage || "Erro ao editar a plantação.");
+      } else {
+        console.error("Erro inesperado ao editar a plantação:", error);
+        alert("Erro inesperado ao editar a plantação.");
+      }
     }
   };
 
@@ -104,8 +126,14 @@ const CropDetails: React.FC<CropDetailsProps> = ({ cropId, onBack }) => {
 
       alert("Fertilizante associado com sucesso!");
     } catch (error) {
-      console.error("Erro ao associar fertilizante:", error);
-      alert("Erro ao associar fertilizante.");
+      if (error instanceof AxiosError && error.response) {
+        // A mensagem de erro do back-end estará em error.response.data
+        const errorMessage = error.response.data as string;
+        alert(errorMessage || "Erro desconhecido.");
+      } else {
+        console.error(error);
+        alert("Erro inesperado ao associar fertilizante.");
+      }
     }
   };
 

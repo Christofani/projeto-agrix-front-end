@@ -1,7 +1,10 @@
+import { Crop } from "./CropType";
+
 export interface Farm {
   id: number;
   name: string;
   size: number;
+  crops: Crop[];
 }
 
 export interface CreateFarm {
