@@ -112,7 +112,7 @@ function Fertilizer() {
               if (fertilizerId) {
                 handlePageChange("details", fertilizerId); // Vai para os detalhes da fazenda
               } else {
-                handlePageChange("create"); // Vai para a criação da fazenda, sem farmId
+                handlePageChange("list"); // Vai para a criação da fazenda, sem farmId
               }
             }}
           />

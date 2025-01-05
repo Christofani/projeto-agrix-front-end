@@ -21,7 +21,15 @@ const FertilizerDetails: React.FC<FertilizerDetailsProps> = ({
     composition: "",
   });
 
+  const [isUserRole, setIsUserRole] = React.useState<boolean>(false);
+
   useEffect(() => {
+    // Verifica a role no localStorage
+    const userRole = localStorage.getItem("role");
+    if (userRole === "USER") {
+      setIsUserRole(true);
+    }
+
     const fetchFertilizer = async () => {
       try {
         const response = await api.get(`/fertilizers/${fertilizerId}`);
@@ -190,13 +198,19 @@ const FertilizerDetails: React.FC<FertilizerDetailsProps> = ({
           <div className="flex justify-between mt-6">
             <button
               onClick={() => setEditing(true)}
-              className="bg-yellow-500 text-white px-4 py-2 rounded-md hover:bg-yellow-600"
+              className={`bg-yellow-500 text-white px-4 py-2 rounded-md hover:bg-yellow-600 ${
+                isUserRole ? "cursor-not-allowed opacity-50" : ""
+              }`}
+              disabled={isUserRole}
             >
               Editar
             </button>
             <button
               onClick={handleDelete}
-              className="bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600"
+              className={`bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600 ${
+                isUserRole ? "cursor-not-allowed opacity-50" : ""
+              }`}
+              disabled={isUserRole}
             >
               Excluir
             </button>
@@ -206,4 +220,5 @@ const FertilizerDetails: React.FC<FertilizerDetailsProps> = ({
     </div>
   );
 };
+
 export default FertilizerDetails;

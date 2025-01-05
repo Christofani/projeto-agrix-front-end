@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Fertilizer, FertilizerListProps } from "../../types/FertilizerType";
 import api from "../../api";
+import { AxiosError } from "axios";
 
 const FertilizerList: React.FC<FertilizerListProps> = ({ onNavigate }) => {
   const [fertilizers, setFertilizers] = useState<Fertilizer[]>([]);
@@ -22,6 +23,31 @@ const FertilizerList: React.FC<FertilizerListProps> = ({ onNavigate }) => {
 
     fetchFertilizers();
   }, []);
+
+  const handleCardClick = async (fertilizerId: number) => {
+    try {
+      // Tente obter os detalhes do fertilizante, se necessário
+      await api.get(`/fertilizers/${fertilizerId}`);
+      onNavigate(fertilizerId); // Navega apenas se não houver erro
+    } catch (err) {
+      if (err instanceof AxiosError && err.response) {
+        const errorMessage = err.response.data as string;
+        if (err.response.status === 403) {
+          // Erro de permissão (Status 403)
+          alert(errorMessage || "Erro de permissão.");
+          onNavigate();
+        } else {
+          // Outros erros
+          alert(errorMessage || "Erro ao carregar o fertilizante.");
+          setError(errorMessage || "Erro ao carregar o fertilizante.");
+        }
+      } else {
+        console.error("Erro inesperado ao carregar o fertilizante:", err);
+        alert("Erro inesperado ao carregar o fertilizante.");
+        setError("Erro inesperado ao carregar o fertilizante.");
+      }
+    }
+  };
 
   if (loading) {
     return (
@@ -58,7 +84,7 @@ const FertilizerList: React.FC<FertilizerListProps> = ({ onNavigate }) => {
             <div
               key={fertilizer.id}
               className="p-4 bg-gray-100 rounded-lg shadow-md cursor-pointer hover:bg-gray-200"
-              onClick={() => onNavigate(fertilizer.id)}
+              onClick={() => handleCardClick(fertilizer.id)}
             >
               <h3 className="text-xl font-bold text-gray-700">
                 {fertilizer.name}

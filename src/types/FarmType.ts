@@ -1,10 +1,12 @@
 import { Crop } from "./CropType";
+import { PersonInfoDto } from "./PersonType";
 
 export interface Farm {
   id: number;
   name: string;
   size: number;
   crops: Crop[];
+  person: PersonInfoDto;
 }
 
 export interface CreateFarm {

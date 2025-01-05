@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import api from "../../api"; // Configuração do Axios
+import { Person } from "../../types/PersonType"; // Importe o tipo Person
 
 const Login: React.FC = () => {
   const [credentials, setCredentials] = useState({
@@ -53,12 +54,20 @@ const Login: React.FC = () => {
       localStorage.removeItem("password");
 
       const response = await api.post("/auth/login", credentials);
-      const { token } = response.data;
+      const { token, role, username } = response.data;
 
       // Armazena o token no localStorage
       localStorage.setItem("token", token);
-      localStorage.setItem("username", credentials.username);
-      localStorage.setItem("role", response.data.role);
+      localStorage.setItem("username", username);
+      localStorage.setItem("role", role);
+
+      const person: Person = {
+        personId: response.data.personId,
+        username,
+        role,
+        farms: response.data.farms,
+      };
+      localStorage.setItem("person", JSON.stringify(person)); // Armazenando a pessoa no localStorage
 
       if (rememberMe) {
         localStorage.setItem("rememberMe", "true");
@@ -73,7 +82,6 @@ const Login: React.FC = () => {
       alert("Credenciais inválidas. Tente novamente."); // Exibe um alert em vez de uma mensagem
     } finally {
       setIsLoading(false); // Finaliza o carregamento
-      // Reseta o estado do "Remember Me"
     }
   };
 
