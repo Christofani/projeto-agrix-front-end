@@ -71,7 +71,7 @@ const CropDetails: React.FC<CropDetailsProps> = ({ cropId, onBack }) => {
     try {
       await api.delete(`/crops/${cropId}`);
       alert("Plantação excluída com sucesso.");
-      onBack(); // Voltar para a lista após excluir
+      onBack();
     } catch (error) {
       if (error instanceof AxiosError && error.response) {
         const errorMessage = error.response.data as string;
@@ -88,7 +88,7 @@ const CropDetails: React.FC<CropDetailsProps> = ({ cropId, onBack }) => {
       await api.put(`/crops/${cropId}`, formData);
       alert("Plantação atualizada com sucesso.");
       setEditing(false);
-      setCrop((prev) => (prev ? { ...prev, ...formData } : null)); // Atualiza os dados localmente
+      setCrop((prev) => (prev ? { ...prev, ...formData } : null));
     } catch (error) {
       if (error instanceof AxiosError && error.response) {
         const errorMessage = error.response.data as string;
@@ -127,7 +127,6 @@ const CropDetails: React.FC<CropDetailsProps> = ({ cropId, onBack }) => {
       alert("Fertilizante associado com sucesso!");
     } catch (error) {
       if (error instanceof AxiosError && error.response) {
-        // A mensagem de erro do back-end estará em error.response.data
         const errorMessage = error.response.data as string;
         alert(errorMessage || "Erro desconhecido.");
       } else {

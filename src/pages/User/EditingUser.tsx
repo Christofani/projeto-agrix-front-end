@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import api from "../../api"; // Configuração do Axios
+import api from "../../api";
 
 const EditUserPage: React.FC = () => {
   const [formData, setFormData] = useState({
@@ -9,8 +9,8 @@ const EditUserPage: React.FC = () => {
     role: "USER",
   });
   const [message, setMessage] = useState<string | null>(null);
-  const [isLoading, setIsLoading] = useState(false); // Estado de loading
-  const [showPassword, setShowPassword] = useState(false); // Estado para controle de visibilidade da senha
+  const [isLoading, setIsLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -26,22 +26,19 @@ const EditUserPage: React.FC = () => {
       try {
         setIsLoading(true);
 
-        // Fazendo a requisição para pegar todos os usuários
         const response = await api.get("/persons", {
           headers: {
             Authorization: `Bearer ${token}`,
           },
         });
 
-        // Encontrar o usuário com o mesmo username
         const user = response.data.find(
           (user: { username: string }) => user.username === username
         );
 
         if (user) {
-          // Armazenar o personId do usuário encontrado no localStorage
-          localStorage.setItem("personId", user.personId.toString()); // Usando personId aqui
-          setFormData(user); // Preencher o formulário com os dados do usuário
+          localStorage.setItem("personId", user.personId.toString());
+          setFormData(user);
         } else {
           setMessage("Usuário não encontrado.");
         }
@@ -55,7 +52,7 @@ const EditUserPage: React.FC = () => {
     };
 
     fetchUserId();
-  }, []); // Executa apenas uma vez ao carregar o componente
+  }, []);
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
@@ -64,7 +61,6 @@ const EditUserPage: React.FC = () => {
     setFormData({ ...formData, [name]: value });
   };
 
-  // Função para alternar a visibilidade da senha
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
   };
@@ -72,7 +68,7 @@ const EditUserPage: React.FC = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const userId = localStorage.getItem("personId"); // Usar personId aqui
+      const userId = localStorage.getItem("personId");
       if (!userId) {
         setMessage("Usuário não encontrado.");
         return;
@@ -86,9 +82,8 @@ const EditUserPage: React.FC = () => {
         },
       });
 
-      // Atualizar o localStorage com os novos dados
       localStorage.setItem("username", formData.username);
-      localStorage.setItem("role", formData.role); // Atualizar a role no localStorage
+      localStorage.setItem("role", formData.role);
       localStorage.setItem("password", formData.password);
       setMessage("Usuário atualizado com sucesso!");
       setTimeout(() => navigate("/home"), 1000);
@@ -98,7 +93,6 @@ const EditUserPage: React.FC = () => {
       setIsLoading(false);
     }
   };
-  
 
   const handleDelete = async () => {
     const confirmDelete = window.confirm(
@@ -107,7 +101,7 @@ const EditUserPage: React.FC = () => {
     if (!confirmDelete) return;
 
     try {
-      const userId = localStorage.getItem("personId"); // Usar personId aqui
+      const userId = localStorage.getItem("personId");
       if (!userId) {
         setMessage("Usuário não encontrado.");
         return;
@@ -139,12 +133,10 @@ const EditUserPage: React.FC = () => {
         </div>
       )}
 
-      {/* A mensagem só será exibida se não estiver carregando */}
       {!isLoading && message && (
         <p className="mb-4 text-center text-red-500">{message}</p>
       )}
 
-      {/* Botão para voltar para a home */}
       <button
         onClick={() => navigate("/home")}
         className="absolute top-5 left-5 text-teal-700 hover:text-teal-900 flex items-center"
@@ -171,7 +163,6 @@ const EditUserPage: React.FC = () => {
       >
         <h1 className="text-6xl mb-10">Editar Usuário</h1>
 
-        {/* Campo de nome de usuário */}
         <fieldset className="mb-4">
           <label htmlFor="username" className="block text-left text-gray-600">
             Nome de Usuário
@@ -235,7 +226,6 @@ const EditUserPage: React.FC = () => {
           </button>
         </fieldset>
 
-        {/* Campo de seleção de papel */}
         <fieldset className="mb-4">
           <label htmlFor="role" className="block text-left text-gray-600">
             Nova Função
@@ -253,7 +243,6 @@ const EditUserPage: React.FC = () => {
           </select>
         </fieldset>
 
-        {/* Botão de atualização */}
         <button
           type="submit"
           disabled={isLoading}
@@ -262,7 +251,6 @@ const EditUserPage: React.FC = () => {
           {isLoading ? "Atualizando..." : "Atualizar Usuário"}
         </button>
 
-        {/* Botão de exclusão */}
         <button
           type="button"
           onClick={handleDelete}

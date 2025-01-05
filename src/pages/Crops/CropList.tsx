@@ -1,20 +1,19 @@
 import React, { useEffect, useState } from "react";
-import api from "../../api"; // Configuração do Axios
+import api from "../../api";
 import { Crop, CropListProps } from "../../types/CropType";
 import { Farm } from "../../types/FarmType";
 
 const CropList: React.FC<CropListProps> = ({ onNavigate }) => {
-  const [crops, setCrops] = useState<Crop[]>([]); // Todas as plantações
-  const [filteredCrops, setFilteredCrops] = useState<Crop[]>([]); // Plantações filtradas por data e/ou fazenda
-  const [farms, setFarms] = useState<Farm[]>([]); // Fazendas para o filtro
-  const [selectedFarmId, setSelectedFarmId] = useState<number | null>(null); // ID da fazenda selecionada
-  const [startDate, setStartDate] = useState<string>(""); // Data de início do filtro
-  const [endDate, setEndDate] = useState<string>(""); // Data de fim do filtro
-  const [hasCrops, setHasCrops] = useState<boolean>(false); // Indica se há plantações cadastradas
-  const [loading, setLoading] = useState<boolean>(true); // Carregando dados
-  const [error, setError] = useState<string | null>(null); // Mensagem de erro
+  const [crops, setCrops] = useState<Crop[]>([]);
+  const [filteredCrops, setFilteredCrops] = useState<Crop[]>([]);
+  const [farms, setFarms] = useState<Farm[]>([]);
+  const [selectedFarmId, setSelectedFarmId] = useState<number | null>(null);
+  const [startDate, setStartDate] = useState<string>("");
+  const [endDate, setEndDate] = useState<string>("");
+  const [hasCrops, setHasCrops] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [error, setError] = useState<string | null>(null);
 
-  // Carregar as fazendas ao montar o componente
   useEffect(() => {
     const fetchFarms = async () => {
       try {
@@ -29,14 +28,13 @@ const CropList: React.FC<CropListProps> = ({ onNavigate }) => {
     fetchFarms();
   }, []);
 
-  // Carregar as plantações ao montar o componente
   useEffect(() => {
     const fetchCrops = async () => {
       try {
         const response = await api.get("/crops");
         const cropsData = response.data;
         setCrops(cropsData);
-        setFilteredCrops(cropsData); // Inicialmente, todas as plantações são exibidas
+        setFilteredCrops(cropsData);
         setHasCrops(cropsData.length > 0);
       } catch (err) {
         console.error("Erro ao buscar as plantações:", err);
@@ -49,7 +47,6 @@ const CropList: React.FC<CropListProps> = ({ onNavigate }) => {
     fetchCrops();
   }, []);
 
-  // Função para aplicar o filtro de data
   const handleDateFilter = async () => {
     if (!startDate || !endDate) {
       alert("Por favor, selecione um intervalo de datas.");
@@ -66,7 +63,7 @@ const CropList: React.FC<CropListProps> = ({ onNavigate }) => {
       });
       const filteredByDate = response.data;
       setCrops(filteredByDate);
-      applyFarmFilter(filteredByDate); // Aplica o filtro de fazenda após o filtro de data
+      applyFarmFilter(filteredByDate);
     } catch (err) {
       console.error("Erro ao filtrar plantações por data:", err);
       setError("Erro ao filtrar plantações por data.");
@@ -75,7 +72,6 @@ const CropList: React.FC<CropListProps> = ({ onNavigate }) => {
     }
   };
 
-  // Aplicar o filtro de fazenda
   const handleFarmChange = (farmId: number | null) => {
     setSelectedFarmId(farmId);
   };
@@ -88,18 +84,16 @@ const CropList: React.FC<CropListProps> = ({ onNavigate }) => {
         );
         setFilteredCrops(farmFilteredCrops);
       } else {
-        setFilteredCrops(cropsList); // Se não houver fazenda selecionada, retorna todas
+        setFilteredCrops(cropsList);
       }
     },
     [selectedFarmId]
   );
 
-  // Filtrar plantações por fazenda
   useEffect(() => {
-    applyFarmFilter(crops); // Sempre que o `selectedFarmId` mudar, o filtro de fazenda é aplicado
+    applyFarmFilter(crops);
   }, [selectedFarmId, crops, applyFarmFilter]);
 
-  // Resetar todos os filtros
   const resetFilters = async () => {
     setLoading(true);
     setStartDate("");
@@ -135,7 +129,6 @@ const CropList: React.FC<CropListProps> = ({ onNavigate }) => {
         Lista de Plantações
       </h1>
 
-      {/* Verifica se há plantações globalmente */}
       {!hasCrops ? (
         <div className="flex flex-col items-center justify-center space-y-4 mt-10">
           <p className="text-lg font-semibold text-gray-700 text-center">
@@ -150,7 +143,6 @@ const CropList: React.FC<CropListProps> = ({ onNavigate }) => {
         </div>
       ) : (
         <>
-          {/* Filtros visíveis apenas quando há plantações */}
           <div className="flex flex-col justify-center gap-10 mb-6 sm:flex-col sm:w-full md:flex-col md:w-full lg:flex-row lg:w-full">
             <div className="flex flex-col gap-2 w-full sm:flex-row sm:gap-4 sm:w-auto md:flex-row md:w-full lg:w-65">
               <select
@@ -204,7 +196,6 @@ const CropList: React.FC<CropListProps> = ({ onNavigate }) => {
             </div>
           </div>
 
-          {/* Exibir plantações filtradas */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
             {filteredCrops.length > 0 ? (
               filteredCrops.map((crop) => (

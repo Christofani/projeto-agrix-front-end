@@ -1,5 +1,5 @@
 import React from "react";
-import Header from "../../components/Header"; // Importe o Header
+import Header from "../../components/Header";
 import Footer from "../../components/Footer";
 
 const Home: React.FC = () => {
@@ -8,7 +8,7 @@ const Home: React.FC = () => {
       <Header />
       <div
         className="mx-auto p-8 bg-white shadow-md font-quicksand 
-        bg-cover bg-center relative" // Adicione as classes para o fundo
+        bg-cover bg-center relative"
         style={{
           backgroundImage: `url('src/images/62f6b8af6b0d4be15714c230f6e80020de7370f778446f76b9f8c973da73441e.png')`,
         }}

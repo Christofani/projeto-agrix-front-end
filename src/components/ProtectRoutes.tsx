@@ -8,7 +8,6 @@ const ProtectedRoute = ({ children }: ProtectedRouteProps) => {
   const token = localStorage.getItem("token");
 
   if (!token) {
-    // Redireciona para a página de login se não estiver autenticado
     return <Navigate to="/login" replace />;
   }
 

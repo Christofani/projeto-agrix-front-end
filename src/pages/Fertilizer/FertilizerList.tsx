@@ -26,18 +26,15 @@ const FertilizerList: React.FC<FertilizerListProps> = ({ onNavigate }) => {
 
   const handleCardClick = async (fertilizerId: number) => {
     try {
-      // Tente obter os detalhes do fertilizante, se necessário
       await api.get(`/fertilizers/${fertilizerId}`);
-      onNavigate(fertilizerId); // Navega apenas se não houver erro
+      onNavigate(fertilizerId);
     } catch (err) {
       if (err instanceof AxiosError && err.response) {
         const errorMessage = err.response.data as string;
         if (err.response.status === 403) {
-          // Erro de permissão (Status 403)
           alert(errorMessage || "Erro de permissão.");
           onNavigate();
         } else {
-          // Outros erros
           alert(errorMessage || "Erro ao carregar o fertilizante.");
           setError(errorMessage || "Erro ao carregar o fertilizante.");
         }
@@ -72,7 +69,7 @@ const FertilizerList: React.FC<FertilizerListProps> = ({ onNavigate }) => {
             Não há fertilizantes cadastrados. Crie um novo fertilizante
           </p>
           <button
-            onClick={() => onNavigate()} // Chama onNavigate para ir para a criação
+            onClick={() => onNavigate()}
             className="bg-teal-700 text-white py-2 px-6 rounded-md hover:bg-teal-600"
           >
             Criar novo Fertilizante

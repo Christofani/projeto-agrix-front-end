@@ -13,11 +13,9 @@ import ProtectedRoute from "./components/ProtectRoutes";
 function App() {
   return (
     <Routes>
-      {/* Rotas públicas */}
       <Route path="/" element={<CreateUserPage />} />
       <Route path="/login" element={<Login />} />
 
-      {/* Rotas protegidas */}
       <Route
         path="/home"
         element={
@@ -59,7 +57,6 @@ function App() {
         }
       />
 
-      {/* Rota para páginas não encontradas */}
       <Route path="*" element={<NotFound />} />
     </Routes>
   );

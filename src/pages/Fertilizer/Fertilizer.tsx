@@ -110,9 +110,9 @@ function Fertilizer() {
           <FertilizerList
             onNavigate={(fertilizerId) => {
               if (fertilizerId) {
-                handlePageChange("details", fertilizerId); // Vai para os detalhes da fazenda
+                handlePageChange("details", fertilizerId); 
               } else {
-                handlePageChange("list"); // Vai para a criação da fazenda, sem farmId
+                handlePageChange("list");
               }
             }}
           />

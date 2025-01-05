@@ -108,9 +108,9 @@ function Crops() {
           <CropList
             onNavigate={(cropId) => {
               if (cropId) {
-                handlePageChange("details", cropId); // Vai para os detalhes da fazenda
+                handlePageChange("details", cropId); 
               } else {
-                handlePageChange("create"); // Vai para a criação da fazenda, sem farmId
+                handlePageChange("create");
               }
             }}
           />

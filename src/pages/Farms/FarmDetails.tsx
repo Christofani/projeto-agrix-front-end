@@ -46,7 +46,7 @@ const FarmDetails: React.FC<FarmDetailsProps> = ({ farmId, onBack }) => {
     try {
       await api.delete(`/farms/${farmId}`);
       alert("Fazenda excluída com sucesso.");
-      onBack(); // Volta para a lista após excluir
+      onBack();
     } catch (err) {
       console.error("Erro ao excluir a fazenda:", err);
       alert("Erro ao excluir a fazenda.");
@@ -58,7 +58,7 @@ const FarmDetails: React.FC<FarmDetailsProps> = ({ farmId, onBack }) => {
       await api.put(`/farms/${farmId}`, formData);
       alert("Fazenda atualizada com sucesso.");
       setEditing(false);
-      setFarm({ ...farm!, ...formData }); // Atualiza os dados localmente
+      setFarm({ ...farm!, ...formData });
     } catch (err) {
       console.error("Erro ao editar a fazenda:", err);
       alert("Erro ao editar a fazenda.");

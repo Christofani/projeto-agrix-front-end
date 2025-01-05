@@ -15,7 +15,7 @@ export interface CreateCropType {
   plantedArea: number;
   plantedDate: string;
   harvestDate: string;
-  farmId: number // ID da fazenda associada à plantação
+  farmId: number
 }
 
 export interface CropDetailsProps {
@@ -24,7 +24,7 @@ export interface CropDetailsProps {
 }
 
 export interface CreateCropProps {
-  onCancel?: () => void; // Função para cancelar
+  onCancel?: () => void;
 }
 
 export interface CropListProps {

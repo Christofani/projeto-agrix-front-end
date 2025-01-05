@@ -6,7 +6,6 @@ const Header: React.FC = () => {
   const userName = localStorage.getItem("username");
   const navigate = useNavigate();
 
-  // Função para deslogar o usuário
   const handleLogout = () => {
     localStorage.removeItem("token");
     localStorage.removeItem("username");
@@ -15,7 +14,6 @@ const Header: React.FC = () => {
     navigate("/login");
   };
 
-  // Função para ver o usuário
   const handleViewUser = () => {
     navigate("/edit-user");
   };
@@ -23,7 +21,6 @@ const Header: React.FC = () => {
   return (
     <header className="bg-teal-900 text-white sm:p-2 md:p-2 lg:p-2 font-quicksand">
       <div className="mx-auto flex justify-between items-center relative 2xl:justify-between">
-        {/* Navegação */}
         <nav className="flex space-x-0.5 px-1 py-1 my-0.5 sm:px-2 sm:py-1 md:px-2 md:py-1 lg:px-0.5 lg:py-1">
           <Link
             to="/home"
@@ -51,9 +48,7 @@ const Header: React.FC = () => {
           </Link>
         </nav>
 
-        {/* Ícone do usuário e nome */}
         <div className="relative flex items-center space-x-2 cursor-pointer hover:bg-teal-700 px-1 py-1 rounded-md sm:px-1 sm:py-1 md:px-1 md:py-1 lg:px-1 lg:py-1">
-          {/* Nome do usuário exibido em telas grandes */}
           <span
             className="hidden lg:block text-white cursor-pointer hover:text-gray-200"
             onClick={() => setIsMenuOpen(!isMenuOpen)}
@@ -75,7 +70,6 @@ const Header: React.FC = () => {
             />
           </svg>
 
-          {/* Card de opções - exibido de forma absoluta */}
           {isMenuOpen && (
             <div className="absolute right-0 bg-teal-500 shadow-md rounded mt-40 w-40 p-2 z-10 flex flex-col items-center justify-center">
               <button
