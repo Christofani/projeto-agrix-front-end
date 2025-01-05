@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const api = axios.create({
-  baseURL: "https://projeto-agrix.fly.dev",
+  baseURL: "https://projeto-agrix.fly.dev/",
 });
 
 const getToken = () => localStorage.getItem("token");
