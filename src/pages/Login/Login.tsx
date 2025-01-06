@@ -1,18 +1,18 @@
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import api from "../../api";
-import { Person } from "../../types/PersonType";
+import api from "../../api"; // Configuração do Axios
 
 const Login: React.FC = () => {
   const [credentials, setCredentials] = useState({
     username: "",
     password: "",
   });
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(false); // Estado de loading
   const [showPassword, setShowPassword] = useState(false);
   const [rememberMe, setRememberMe] = useState(false);
   const navigate = useNavigate();
 
+  // Inicializa o estado do "Remember Me" e preenche o username se necessário
   useEffect(() => {
     const savedRememberMe = localStorage.getItem("rememberMe") === "true";
     setRememberMe(savedRememberMe);
@@ -26,42 +26,51 @@ const Login: React.FC = () => {
     }
   }, []);
 
+  // Atualiza os campos de login
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setCredentials({ ...credentials, [name]: value });
   };
 
+  // Lógica para alternar a visibilidade da senha
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
   };
 
+  // Lógica para alternar o "remember me"
   const handleRememberMeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setRememberMe(e.target.checked);
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setIsLoading(true);
+    setIsLoading(true); // Inicia o carregamento
     try {
+      // Limpa qualquer token antigo antes de fazer login
       localStorage.removeItem("token");
       localStorage.removeItem("username");
       localStorage.removeItem("role");
       localStorage.removeItem("password");
 
       const response = await api.post("/auth/login", credentials);
-      const { token, role, username } = response.data;
+      const { token } = response.data;
 
+      // Armazena o token no localStorage
       localStorage.setItem("token", token);
-      localStorage.setItem("username", username);
-      localStorage.setItem("role", role);
+      localStorage.setItem("username", credentials.username);
 
-      const person: Person = {
-        personId: response.data.personId,
-        username,
-        role,
-        farms: response.data.farms,
-      };
-      localStorage.setItem("person", JSON.stringify(person));
+      // Agora faz a requisição para pegar todos os usuários e seus papéis
+      const usersResponse = await api.get("/persons");
+
+      // Encontre o usuário logado na lista de usuários
+      const loggedInUser = usersResponse.data.find(
+        (user: { username: string }) => user.username === credentials.username
+      );
+
+      if (loggedInUser) {
+        // Armazene a role no localStorage
+        localStorage.setItem("role", loggedInUser.role);
+      }
 
       if (rememberMe) {
         localStorage.setItem("rememberMe", "true");
@@ -69,12 +78,13 @@ const Login: React.FC = () => {
         localStorage.removeItem("rememberMe");
       }
 
+      // Redireciona para a página principal
       navigate("/home");
     } catch (error) {
       console.error("Erro ao fazer login:", error);
-      alert("Credenciais inválidas. Tente novamente.");
+      alert("Credenciais inválidas. Tente novamente."); // Exibe um alert em vez de uma mensagem
     } finally {
-      setIsLoading(false);
+      setIsLoading(false); // Finaliza o carregamento
     }
   };
 
