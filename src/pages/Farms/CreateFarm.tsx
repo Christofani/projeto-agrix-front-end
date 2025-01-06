@@ -8,17 +8,22 @@ const CreateFarm: React.FC<CreateFarmProps> = ({ onCancel }) => {
   const [formData, setFormData] = useState({
     name: "",
     size: 0,
-    person: { personId: 0, username: "" },
+    personId: 0, // Alterado para armazenar somente o personId
   });
   const [isLoading, setIsLoading] = useState(false);
   const [persons, setPersons] = useState<PersonInfoDto[]>([]);
   const userRole = localStorage.getItem("role");
 
   useEffect(() => {
+    console.log("User Role:", userRole); // Log da role para depuração
+
+    // Carrega as pessoas apenas se o usuário for ADMIN ou MANAGER
     if (userRole === "ADMIN" || userRole === "MANAGER") {
       const fetchPersons = async () => {
         try {
+          console.log("Iniciando a busca de pessoas...");
           const response = await api.get<PersonInfoDto[]>("/persons");
+          console.log("Pessoas carregadas com sucesso:", response.data); // Verifique os dados
           setPersons(response.data);
         } catch (error) {
           console.error("Erro ao buscar usuários:", error);
@@ -26,6 +31,8 @@ const CreateFarm: React.FC<CreateFarmProps> = ({ onCancel }) => {
       };
 
       fetchPersons();
+    } else {
+      console.log("Usuário não tem permissão para carregar pessoas.");
     }
   }, [userRole]);
 
@@ -33,14 +40,12 @@ const CreateFarm: React.FC<CreateFarmProps> = ({ onCancel }) => {
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
   ) => {
     const { name, value } = e.target;
+    console.log(`Mudança no campo ${name}: ${value}`); // Verifique o valor aqui
 
-    if (name === "person") {
-      const selectedPerson = persons.find(
-        (person) => person.personId.toString() === value
-      );
+    if (name === "personId") {
       setFormData({
         ...formData,
-        person: selectedPerson || { personId: 0, username: "" },
+        personId: parseInt(value, 10), // Atualiza diretamente o personId
       });
     } else {
       setFormData({ ...formData, [name]: value });
@@ -49,28 +54,39 @@ const CreateFarm: React.FC<CreateFarmProps> = ({ onCancel }) => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    console.log("Formulário enviado com os dados:", formData);
 
+    // Verifica se o usuário tem permissão para criar a fazenda
     if (userRole === "USER") {
       alert("❌ Você não tem permissão para criar fazendas.");
+      console.log("Tentativa de criação de fazenda por usuário sem permissão.");
       return;
     }
 
     setIsLoading(true);
+    console.log("Iniciando a criação da fazenda...");
 
     try {
       const response = await api.post<Farm>("/farms", formData);
+      console.log("Fazenda criada com sucesso:", response.data);
       alert(`✅ Fazenda criada com sucesso! ID: ${response.data.id}`);
-      setFormData({ name: "", size: 0, person: { personId: 0, username: "" } });
+      setFormData({ name: "", size: 0, personId: 0 }); // Resetando os dados após envio
       onCancel();
     } catch (error) {
       console.error("Erro ao criar a fazenda:", error);
       if (error instanceof AxiosError && error.response) {
         alert(`❌ ${error.response.data?.message}`);
+        console.log(
+          "Mensagem de erro do servidor:",
+          error.response.data?.message
+        );
       } else {
         alert("❌ Erro inesperado ao criar a fazenda.");
+        console.log("Erro inesperado ao criar a fazenda:", error);
       }
     } finally {
       setIsLoading(false);
+      console.log("Processo de criação de fazenda finalizado.");
     }
   };
 
@@ -115,15 +131,15 @@ const CreateFarm: React.FC<CreateFarmProps> = ({ onCancel }) => {
             required
           />
         </div>
-        {userRole === "ADMIN" || userRole === "MANAGER" ? (
+        {(userRole === "ADMIN" || userRole === "MANAGER") && (
           <div className="mb-4">
             <label htmlFor="person" className="block text-gray-700 font-medium">
               Proprietário da Fazenda:
             </label>
             <select
               id="person"
-              name="person"
-              value={formData.person.personId}
+              name="personId" // Alterado para personId
+              value={formData.personId}
               onChange={handleChange}
               className="w-full mt-2 p-2 border border-gray-300 rounded-md"
             >
@@ -135,7 +151,7 @@ const CreateFarm: React.FC<CreateFarmProps> = ({ onCancel }) => {
               ))}
             </select>
           </div>
-        ) : null}
+        )}
         <div className="flex justify-between items-center">
           <button
             type="button"

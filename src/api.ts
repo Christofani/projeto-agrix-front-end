@@ -1,12 +1,15 @@
 import axios from "axios";
 
 const api = axios.create({
-  baseURL: "https://projeto-agrix.fly.dev/",
+  // baseURL: "https://projeto-agrix.fly.dev",
+    baseURL: "http://localhost:8080",
+
 });
 
 const getToken = () => localStorage.getItem("token");
 
 api.interceptors.request.use(
+  
   (config) => {
     const token = getToken();
     if (token) {

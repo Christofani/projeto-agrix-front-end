@@ -42,6 +42,8 @@ const CreateUserPage: React.FC = () => {
       return;
     }
 
+    localStorage.removeItem("token");
+
     setIsLoading(true);
 
     try {
