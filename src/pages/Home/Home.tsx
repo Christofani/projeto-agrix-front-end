@@ -10,7 +10,7 @@ const Home: React.FC = () => {
         className="mx-auto p-8 bg-white shadow-md font-quicksand 
         bg-cover bg-center relative"
         style={{
-          backgroundImage: `url('src/images/fundoPlantas.png')`,
+          backgroundImage: `url('/fundoPlantas.png')`,
         }}
       >
         <main className="max-w-4xl mx-auto p-4  shadow-md rounded-lg font-quicksand backdrop-opacity-40 backdrop-invert bg-white/25 ">
