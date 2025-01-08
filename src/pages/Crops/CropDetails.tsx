@@ -106,6 +106,16 @@ const CropDetails: React.FC<CropDetailsProps> = ({ cropId, onBack }) => {
       return;
     }
 
+    // Verificar se o fertilizante já está associado
+    const isAlreadyAssociated = crop?.fertilizers.some(
+      (fertilizer) => fertilizer.id === selectedFertilizer
+    );
+
+    if (isAlreadyAssociated) {
+      alert("Este fertilizante já está associado a esta plantação.");
+      return;
+    }
+
     try {
       await api.post(`/crops/${cropId}/fertilizers/${selectedFertilizer}`);
 
@@ -135,6 +145,7 @@ const CropDetails: React.FC<CropDetailsProps> = ({ cropId, onBack }) => {
       }
     }
   };
+  
 
   if (loading) {
     return (

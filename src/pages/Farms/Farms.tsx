@@ -1,5 +1,4 @@
-import { useState } from 'react';
-import Header from "../../components/Header";
+import { useState } from "react";
 import CreateFarm from "./CreateFarm";
 import FarmList from "./FarmList";
 import FarmDetails from "./FarmDetails";
@@ -31,8 +30,6 @@ function Farms() {
 
   return (
     <div className="font-quicksand bg-teal-100 min-h-screen w-full overflow-x-hidden">
-      <Header />
-
       {activePage === "none" && showImage && (
         <div className="flex justify-center mt-4 p-4">
           <div className="flex flex-col items-center mt-4 p-4 space-y-4 sm:flex-row sm:space-y-0 sm:space-x-6">
