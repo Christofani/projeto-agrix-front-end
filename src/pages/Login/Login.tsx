@@ -180,7 +180,7 @@ const Login: React.FC = () => {
         <div className="mt-4 text-center">
           <p>
             Não é usuário?{" "}
-            <Link to="/" className="text-blue-500 hover:underline">
+            <Link to="/create" className="text-blue-500 hover:underline">
               Criar usuário
             </Link>
           </p>
