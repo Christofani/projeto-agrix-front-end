@@ -79,7 +79,7 @@ const Login: React.FC = () => {
       }
 
       // Redireciona para a página principal
-      navigate("/home");
+      navigate("/");
     } catch (error) {
       console.error("Erro ao fazer login:", error);
       alert("Credenciais inválidas. Tente novamente."); // Exibe um alert em vez de uma mensagem

@@ -1,5 +1,4 @@
 import { useState } from "react";
-import Header from "../../components/Header";
 import imagem from "../../images/fertilizer.webp";
 import CreateFertilizer from "./CreateFertilizer";
 import FertilizerList from "./FertilizerList";
@@ -34,7 +33,6 @@ function Fertilizer() {
 
   return (
     <div className="font-quicksand bg-teal-100 min-h-screen w-full overflow-x-hidden ">
-      <Header />
       {activePage === "none" && showImage && (
         <div className="flex justify-center mt-4 p-4">
           <div className="flex flex-col items-center mt-4 p-4 space-y-4 sm:flex-row sm:space-y-0 sm:space-x-4">
@@ -110,7 +108,7 @@ function Fertilizer() {
           <FertilizerList
             onNavigate={(fertilizerId) => {
               if (fertilizerId) {
-                handlePageChange("details", fertilizerId); 
+                handlePageChange("details", fertilizerId);
               } else {
                 handlePageChange("list");
               }

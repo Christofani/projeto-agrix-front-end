@@ -138,7 +138,7 @@ const EditUserPage: React.FC = () => {
       )}
 
       <button
-        onClick={() => navigate("/home")}
+        onClick={() => navigate("/")}
         className="absolute top-5 left-5 text-teal-700 hover:text-teal-900 flex items-center"
       >
         <svg

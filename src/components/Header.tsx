@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 
 const Header: React.FC = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -22,30 +22,46 @@ const Header: React.FC = () => {
     <header className="bg-teal-900 text-white sm:p-2 md:p-2 lg:p-2 font-quicksand">
       <div className="mx-auto flex justify-between items-center relative 2xl:justify-between">
         <nav className="flex space-x-0.5 px-1 py-1 my-0.5 sm:px-2 sm:py-1 md:px-2 md:py-1 lg:px-0.5 lg:py-1">
-          <Link
-            to="/home"
-            className="hover:bg-teal-700 px-1 py-1 rounded-md sm:px-2 sm:py-1 md:px-2 md:py-1 lg:px-5 lg:py-1"
+          <NavLink
+            to="/"
+            className={({ isActive }) =>
+              `px-1 py-1 rounded-md sm:px-2 sm:py-1 md:px-2 md:py-1 lg:px-5 lg:py-1 ${
+                isActive ? "bg-teal-700" : "hover:bg-teal-700"
+              }`
+            }
           >
             Início
-          </Link>
-          <Link
+          </NavLink>
+          <NavLink
             to="/farms"
-            className="hover:bg-teal-700 px-1 py-1 rounded-md sm:px-2 sm:py-1 md:px-2 md:py-1 lg:px-5 lg:py-1"
+            className={({ isActive }) =>
+              `px-1 py-1 rounded-md sm:px-2 sm:py-1 md:px-2 md:py-1 lg:px-5 lg:py-1 ${
+                isActive ? "bg-teal-700" : "hover:bg-teal-700"
+              }`
+            }
           >
             Fazendas
-          </Link>
-          <Link
+          </NavLink>
+          <NavLink
             to="/crops"
-            className="hover:bg-teal-700 px-1 py-1 rounded-md sm:px-2 sm:py-1 md:px-2 md:py-1 lg:px-5 lg:py-1"
+            className={({ isActive }) =>
+              `px-1 py-1 rounded-md sm:px-2 sm:py-1 md:px-2 md:py-1 lg:px-5 lg:py-1 ${
+                isActive ? "bg-teal-700" : "hover:bg-teal-700"
+              }`
+            }
           >
             Plantações
-          </Link>
-          <Link
+          </NavLink>
+          <NavLink
             to="/fertilizers"
-            className="hover:bg-teal-700 px-1 py-1 rounded-md sm:px-2 sm:py-1 md:px-2 md:py-1 lg:px-5 lg:py-1"
+            className={({ isActive }) =>
+              `px-1 py-1 rounded-md sm:px-2 sm:py-1 md:px-2 md:py-1 lg:px-5 lg:py-1 ${
+                isActive ? "bg-teal-700" : "hover:bg-teal-700"
+              }`
+            }
           >
             Fertilizantes
-          </Link>
+          </NavLink>
         </nav>
 
         <div className="relative flex items-center space-x-2 cursor-pointer hover:bg-teal-700 px-1 py-1 rounded-md sm:px-1 sm:py-1 md:px-1 md:py-1 lg:px-1 lg:py-1">

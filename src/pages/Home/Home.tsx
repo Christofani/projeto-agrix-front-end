@@ -1,11 +1,9 @@
 import React from "react";
-import Header from "../../components/Header";
-import Footer from "../../components/Footer";
+
 
 const Home: React.FC = () => {
   return (
-    <div className="min-h-screen">
-      <Header />
+    <div className="h-full">
       <div
         className="mx-auto p-8 bg-white shadow-md font-quicksand 
         bg-cover bg-center relative"
@@ -59,7 +57,6 @@ const Home: React.FC = () => {
           </div>
         </main>
       </div>
-      <Footer />
     </div>
   );
 };
