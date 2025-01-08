@@ -15,7 +15,7 @@ function App() {
   return (
     <Routes>
       {/* Rotas públicas */}
-      <Route path="/" element={<CreateUserPage />} />
+      <Route path="/create" element={<CreateUserPage />} />
       <Route path="/login" element={<Login />} />
 
       {/* Rotas protegidas, com Layout global */}
