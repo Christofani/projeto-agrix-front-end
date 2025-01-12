@@ -86,7 +86,7 @@ const EditUserPage: React.FC = () => {
       localStorage.setItem("role", formData.role);
       localStorage.setItem("password", formData.password);
       setMessage("Usuário atualizado com sucesso!");
-      setTimeout(() => navigate("/home"), 1000);
+      setTimeout(() => navigate("/"), 1000);
     } catch (error) {
       console.error("Erro ao atualizar usuário:", error);
       setMessage("Erro ao atualizar usuário.");
