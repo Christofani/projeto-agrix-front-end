@@ -1,10 +1,11 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 
 const Header: React.FC = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const userName = localStorage.getItem("username");
   const navigate = useNavigate();
+  const menuRef = useRef<HTMLDivElement>(null);
 
   const handleLogout = () => {
     localStorage.removeItem("token");
@@ -17,6 +18,19 @@ const Header: React.FC = () => {
   const handleViewUser = () => {
     navigate("/edit-user");
   };
+
+  // Fecha o menu ao clicar fora
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
+        setIsMenuOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
 
   return (
     <header className="bg-teal-900 text-white sm:p-2 md:p-2 lg:p-2 font-quicksand">
@@ -64,7 +78,10 @@ const Header: React.FC = () => {
           </NavLink>
         </nav>
 
-        <div className="relative flex items-center space-x-2 cursor-pointer hover:bg-teal-700 px-1 py-1 rounded-md sm:px-1 sm:py-1 md:px-1 md:py-1 lg:px-1 lg:py-1">
+        <div
+          className="relative flex items-center space-x-2 cursor-pointer hover:bg-teal-700 px-1 py-1 rounded-md sm:px-1 sm:py-1 md:px-1 md:py-1 lg:px-1 lg:py-1"
+          ref={menuRef}
+        >
           <span
             className="hidden lg:block text-white cursor-pointer hover:text-gray-200"
             onClick={() => setIsMenuOpen(!isMenuOpen)}
