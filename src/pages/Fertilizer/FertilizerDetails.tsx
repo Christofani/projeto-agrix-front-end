@@ -170,7 +170,7 @@ const FertilizerDetails: React.FC<FertilizerDetailsProps> = ({
           <div className="flex justify-between">
             <button
               onClick={handleEdit}
-              className="bg-green-500 text-white w-full max-w-xs sm:w-auto py-2 px-4 rounded-md hover:bg-green-600"
+              className="bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-600"
             >
               Salvar
             </button>
