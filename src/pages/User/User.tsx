@@ -74,7 +74,7 @@ const CreateUserPage: React.FC = () => {
 
       <form
         onSubmit={handleSubmit}
-        className="bg-white px-14 py-10 rounded-xl shadow-lg text-center relative"
+        className="bg-white mx-4 px-14 py-10 rounded-xl shadow-lg text-center relative"
       >
         <h1
           className=" text-4xl mb-10 p-2
