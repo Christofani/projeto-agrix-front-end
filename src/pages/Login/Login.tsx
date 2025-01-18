@@ -101,7 +101,7 @@ const Login: React.FC = () => {
 
       <form
         onSubmit={handleSubmit}
-        className="bg-white px-14 py-10 rounded-xl shadow-lg text-center w-96"
+        className="bg-white mx-4 px-14 py-10 rounded-xl shadow-lg text-center w-96"
       >
         <h1 className="text-6xl mb-10">Entrar</h1>
         <fieldset className="mb-4">

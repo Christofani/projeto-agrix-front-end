@@ -15,8 +15,10 @@ export default {
         '65': '65%',
         '35': '35%',
       },
+      screens: {
+        'sm-390': '390px', // Novo breakpoint para 370px
+      },
     },
   },
   plugins: [],
 }
-
