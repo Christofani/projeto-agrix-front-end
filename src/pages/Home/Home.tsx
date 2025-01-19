@@ -25,43 +25,40 @@ const Home: React.FC = () => {
             </p>
 
             <div className="text-center">
-              <div
-                className={`text-black-900 mb-6 ${
-                  !showMore ? "line-clamp-4 sm-390:block" : ""
+              <ul
+                className={`text-black-900 mb-6 list-disc list-inside ${
+                  !showMore ? "line-clamp-10 sm-390:block" : ""
                 }`}
               >
-                <ul className="list-disc list-inside">
-                  <li>
-                    <strong>Gerenciamento de fazendas:</strong> Crie, liste,
-                    visualize, atualize e delete fazendas através dos endpoints
-                    em <code>/farms</code>.
-                  </li>
-                  <li>
-                    <strong>Gestão de plantações:</strong> Adicione, liste e
-                    modifique plantações dentro das fazendas, incluindo a
-                    possibilidade de buscar plantações por data de colheita,
-                    usando o endpoint <code>/crops</code>.
-                  </li>
-                  <li>
-                    <strong>Controle de fertilizantes:</strong> Registre e
-                    associe fertilizantes às plantações, além de listar todos os
-                    fertilizantes disponíveis. O acesso a essa funcionalidade é
-                    restrito a usuários com o role ADMIN, via{" "}
-                    <code>/fertilizers</code>.
-                  </li>
-                  <li>
-                    <strong>Autenticação e controle de acesso:</strong> Realize
-                    o login e autentique-se para acessar os dados das fazendas,
-                    plantações e fertilizantes de forma segura, com tokens JWT.
-                  </li>
-                </ul>
-
+                <li>
+                  <strong>Gerenciamento de fazendas:</strong> Crie, liste,
+                  visualize, atualize e delete fazendas através dos endpoints em{" "}
+                  <code>/farms</code>.
+                </li>
+                <li>
+                  <strong>Gestão de plantações:</strong> Adicione, liste e
+                  modifique plantações dentro das fazendas, incluindo a
+                  possibilidade de buscar plantações por data de colheita,
+                  usando o endpoint <code>/crops</code>.
+                </li>
+                <li>
+                  <strong>Controle de fertilizantes:</strong> Registre e associe
+                  fertilizantes às plantações, além de listar todos os
+                  fertilizantes disponíveis. O acesso a essa funcionalidade é
+                  restrito a usuários com o role ADMIN, via{" "}
+                  <code>/fertilizers</code>.
+                </li>
+                <li>
+                  <strong>Autenticação e controle de acesso:</strong> Realize o
+                  login e autentique-se para acessar os dados das fazendas,
+                  plantações e fertilizantes de forma segura, com tokens JWT.
+                </li>
                 <p className="text-lg text-black-900 text-center mt-4">
                   A plataforma Agrix é ideal para agricultores e gestores
                   agrícolas que buscam uma solução prática e segura para a
                   administração de suas propriedades e recursos.
                 </p>
-              </div>
+              </ul>
 
               {/* Botão "Ler mais" apenas em telas menores que 370px */}
               {!showMore && (
