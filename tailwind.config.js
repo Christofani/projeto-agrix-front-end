@@ -18,6 +18,9 @@ export default {
       screens: {
         'sm-390': '390px', // Novo breakpoint para 370px
       },
+      lineClamp: { // Adiciona um valor específico para line-clamp
+        10: '10', // Define a classe `line-clamp-10`
+      },
     },
   },
   plugins: [],
